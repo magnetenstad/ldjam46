@@ -1,0 +1,26 @@
+
+theme: "Keep it alive"
+
+genre ideas:
+    tower defense
+    survival
+    tomagotchi-like
+
+what is "it"?
+    some object with health
+    environment
+    garden, plants
+    animal, puppy game:))
+    a sinking ship
+    [a torch]
+    music
+
+what is the threat?
+    starvation
+    lack of vital resource
+    aggressive enemies
+
+torch game
+    puzzles
+    torch provides light
+    
