@@ -5,7 +5,7 @@ var acc = 400
 var grav = 300
 var jump = 150
 var spd_max = 80
-var burning = []
+var burns = []
 
 func _on_ready():
 	 pass
@@ -28,13 +28,25 @@ func _physics_process(delta):
 	var tilemap = $"/root/Main/World/TileMap"
 	var pos = tilemap.world_to_map(position)
 	pos.y += 1
-	var cell = tilemap.get_cell(pos.x, pos.y)
 
-	if cell == 0 and Input.is_action_pressed("ui_down"):
+	if tilemap.get_cell(pos.x, pos.y) != -1 and Input.is_action_pressed("ui_down"):
 		tilemap.set_cell(pos.x, pos.y, 8)
-		burning.append(pos)
-	
-	if burning.size() > 0 and floor(rand_range(0, 60)) == 0:
-		pos = burning[0]
-		tilemap.set_cell(pos.x, pos.y, -1)
-		burning.remove(0)
+		burns.append([floor(rand_range(0, 60)), pos])
+
+	for i in range(burns.size()):
+		var burn = burns[i]
+		pos = burn[1]
+		burn[0] -= 1
+		
+		if burn[0] <= 0:
+			tilemap.set_cell(pos.x, pos.y, -1)
+			burns.remove(i)
+			break
+		else:
+			var others = [Vector2(pos.x - 1, pos.y), Vector2(pos.x, pos.y - 1), Vector2(pos.x + 1, pos.y), Vector2(pos.x, pos.y + 1)]
+			
+			for other in others:
+				var cell = tilemap.get_cell(other.x, other.y)
+				if cell != -1 and cell != 8 and burn[0] == 20:
+					tilemap.set_cell(other.x, other.y, 8)
+					burns.append([floor(rand_range(0, 60)), other])
