@@ -79,7 +79,7 @@ func _physics_process(delta):
 	if world.has_node("Wood"):
 		var wood = world.get_node("Wood")
 		if point_distance(position.x, position.y, wood.position.x, wood.position.y) < 16:
-			health += 1
+			health = 1
 			wood.queue_free()
 	
 	health = max(0, health - 0.1 * delta)	
