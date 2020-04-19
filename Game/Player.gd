@@ -10,6 +10,7 @@ onready var gameover_message= $"/root/Main/World/Player/Camera2D/Control"
 onready var audio = $"Audio"
 var bonfire
 var last_checkpoint_position = Vector2(0, 0)
+var last_mouse_pos = Vector2()
 
 var flammable = [0, 1]
 
@@ -35,17 +36,22 @@ func _process(delta):
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
+		last_mouse_pos = (get_global_mouse_position() - position).normalized() * 32
 		var buffered_enemies_in_range = enemies_in_range + []
 		for enemy in buffered_enemies_in_range:
 			enemy.queue_free()
-
-func _physics_process(delta):
+		
+func _draw():
+	last_mouse_pos = lerp(last_mouse_pos, Vector2(), 0.05)
+	draw_line(Vector2(), last_mouse_pos, Color(1, 1, 1), 2)
 	
+func _physics_process(delta):
+	update()
 	velocity.y += grav * delta
 	
-	if Input.is_action_pressed("ui_left"):
+	if Input.is_key_pressed(KEY_A):
 		velocity.x = max(velocity.x - acc * delta, -spd_max)
-	elif Input.is_action_pressed("ui_right"):
+	elif Input.is_key_pressed(KEY_D):
 		velocity.x = min(velocity.x + acc * delta, spd_max)
 	else:
 		velocity.x *= 0.9
@@ -63,25 +69,25 @@ func _physics_process(delta):
 	var cell = tilemap.get_cell(pos.x, pos.y)
 	
 	# climb and jump
-	
-	if cell == 9 and Input.is_action_pressed("ui_up"):
-		velocity.y = -jump/4
-	elif is_on_floor() and Input.is_action_just_pressed("ui_up"):
+	if cell == 9 and Input.is_key_pressed(KEY_W):
+		velocity.y = -jump/3
+	elif is_on_floor() and Input.is_key_pressed(KEY_W):
 		velocity.y = -jump
 	# respawn to checkpoint
 	
 	if Input.is_key_pressed(KEY_R):
-		position = last_checkpoint_position
-		jump = 150
-		spd_max = 80
-		health = 1
-		audio.play()
+		if position != last_checkpoint_position or health == 0:
+			position = last_checkpoint_position
+			jump = 150
+			spd_max = 80
+			health = 1
+			audio.play()
 	
 	# set fire
 	
 	var direction = -(int(get_node("Sprite").is_flipped_h())*2-1) # 1: left, 0: right
 								
-	if health > 0 and Input.is_action_pressed("ui_down"):
+	if health > 0 and Input.is_key_pressed(KEY_S):
 		var firepos = Vector2(-42069, -42069)
 		if tilemap.get_cell(pos.x + direction, pos.y) in flammable:
 			firepos = Vector2(pos.x+direction, pos.y)

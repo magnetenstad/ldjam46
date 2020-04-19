@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://tilemap.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/player.png" type="Texture" id=2]
@@ -15,23 +15,26 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 7.9 )
 
-[sub_resource type="CanvasItemMaterial" id=6]
+[sub_resource type="CanvasItemMaterial" id=2]
 blend_mode = 1
 
-[sub_resource type="CanvasItemMaterial" id=7]
+[sub_resource type="CanvasItemMaterial" id=3]
 blend_mode = 1
 
-[sub_resource type="OccluderPolygon2D" id=2]
+[sub_resource type="OccluderPolygon2D" id=4]
 polygon = PoolVector2Array( -4.00137, 7.8611, -4.09742, 3.9552, -5.95432, 4.01923, -5.95432, -0.943193, -4.03339, -2.03172, -4.00137, -9.07516, -2.88082, -10.0036, 2.97803, -9.9716, 2.97803, -2.09576, 1.95354, -1.03924, 3.84246, -0.0787716, 5.9875, 2.00224, 5.92347, 4.01923, 2.91401, 3.9552, 3.07408, 7.89312, -0.0314331, 7.98916, -0.0314331, 4.9797, -0.959885, 4.9797, -0.991901, 7.82909 )
+
+[sub_resource type="RectangleShape2D" id=8]
+extents = Vector2( 55.8416, 10 )
 
 [sub_resource type="CanvasItemMaterial" id=5]
 blend_mode = 1
 
-[sub_resource type="Gradient" id=3]
+[sub_resource type="Gradient" id=6]
 colors = PoolColorArray( 0.143594, 0.140813, 0.283203, 1, 0.330783, 0.578245, 0.607422, 1 )
 
-[sub_resource type="GradientTexture" id=4]
-gradient = SubResource( 3 )
+[sub_resource type="GradientTexture" id=7]
+gradient = SubResource( 6 )
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
@@ -58,7 +61,7 @@ current = true
 zoom = Vector2( 0.25, 0.25 )
 
 [node name="Control" type="Control" parent="World/Player/Camera2D"]
-material = SubResource( 6 )
+material = SubResource( 2 )
 margin_left = -37.7731
 margin_top = -20.3897
 margin_right = 2.2269
@@ -68,7 +71,7 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="World/Player/Camera2D/Control"]
-material = SubResource( 7 )
+material = SubResource( 3 )
 margin_left = -20.0
 margin_right = 98.0
 margin_bottom = 48.0
@@ -82,7 +85,7 @@ __meta__ = {
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Player"]
 visible = false
-occluder = SubResource( 2 )
+occluder = SubResource( 4 )
 
 [node name="Light2D" type="Light2D" parent="World/Player"]
 modulate = Color( 1, 1, 1, 0 )
@@ -95,9 +98,15 @@ range_height = 1.0
 shadow_enabled = true
 script = ExtResource( 9 )
 
-
 [node name="Audio" type="AudioStreamPlayer" parent="World/Player"]
 stream = ExtResource( 11 )
+
+[node name="AttackArea" type="Area2D" parent="World/Player"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Player/AttackArea"]
+position = Vector2( 0.400604, -0.368057 )
+scale = Vector2( 0.546, 1.205 )
+shape = SubResource( 8 )
 
 [node name="CanvasModulate" type="CanvasModulate" parent="World"]
 process_priority = 2
@@ -108,13 +117,6 @@ light_mask = 8
 z_index = 1
 z_as_relative = false
 color = Color( 0, 0, 0, 1 )
-
-[node name="AttackArea" type="Area2D" parent="World/Player"]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Player/AttackArea"]
-position = Vector2( 10.338, 0 )
-scale = Vector2( 0.546, 1.205 )
-shape = SubResource( 5 )
 
 [node name="TileMap" type="TileMap" parent="World"]
 z_as_relative = false
@@ -139,7 +141,7 @@ position = Vector2( 2518.59, 1568.28 )
 rotation = 4.71238
 scale = Vector2( 1.32188, -4453.87 )
 z_index = -1
-texture = SubResource( 4 )
+texture = SubResource( 7 )
 centered = false
 __meta__ = {
 "_edit_group_": true,
@@ -194,7 +196,6 @@ position = Vector2( 412.64, 208.453 )
 
 [node name="Bonfire2" parent="World/Fireplacii" instance=ExtResource( 10 )]
 position = Vector2( 891.159, 912.235 )
-
 
 [node name="Bonfire3" parent="World/Fireplacii" instance=ExtResource( 10 )]
 position = Vector2( 2137.28, -255.28 )
