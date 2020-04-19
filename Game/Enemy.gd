@@ -35,6 +35,6 @@ func _physics_process(delta):
 #	if target.position.y < position.y:
 #		velocity.y = -jump
 
-	velocity.x = sin(OS.get_ticks_msec()/1000) * spd_max
+	velocity.x = sin(OS.get_ticks_msec()/1000.0) * spd_max
 	
 	velocity = move_and_slide(velocity)
