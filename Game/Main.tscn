@@ -60,6 +60,7 @@ occluder = SubResource( 2 )
 scale = Vector2( 0.462974, 0.462974 )
 texture = ExtResource( 6 )
 texture_scale = 4.0
+color = Color( 1, 0.627451, 0, 1 )
 range_height = 1.0
 shadow_enabled = true
 script = ExtResource( 9 )
