@@ -23,7 +23,7 @@ func _on_ready():
 	pass
 
 func _physics_process(delta):
-#	target = $"/root/Main/World/Player"
+	target = $"/root/Main/World/Player"
 #
 	velocity.y += grav * delta
 #
@@ -32,9 +32,11 @@ func _physics_process(delta):
 #	else:
 #		velocity.x = min(velocity.x + acc * delta, spd_max)
 #
-#	if target.position.y < position.y:
-#		velocity.y = -jump
+
 
 	velocity.x = sin(OS.get_ticks_msec()/1000.0) * spd_max
 	
-	velocity = move_and_slide(velocity)
+	velocity = move_and_slide(velocity, Vector2(0, -1))
+	
+	if is_on_floor() and target.position.y < position.y:
+		velocity.y = -jump

@@ -13,9 +13,6 @@ var flammable = [0, 1, 2]
 
 var health = 1
 
-func point_distance(x0, y0, x1, y1):
-	return sqrt(pow(x1-x0, 2) + pow(y1-y0, 2))
-
 func image_set_flip(flip):
 	get_node("Sprite").set_flip_h(flip)
 	
@@ -53,7 +50,6 @@ func _physics_process(delta):
 		velocity.y = -jump/4
 	elif is_on_floor() and Input.is_action_just_pressed("ui_up"):
 		velocity.y = -jump
-	
 	
 	pos.y += 1
 	
@@ -98,15 +94,6 @@ func _physics_process(delta):
 			if collision and collision.collider == enemy:
 				enemy.queue_free()
 			
-	# wood
-	
-	
-	if world.has_node("Wood"):
-		var wood = world.get_node("Wood")
-		if point_distance(position.x, position.y, wood.position.x, wood.position.y) < 16:
-			health = 1
-			wood.queue_free()
-	
 	health = max(0, health - 0.05 * delta)	
 
 	
