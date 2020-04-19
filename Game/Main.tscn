@@ -31,6 +31,12 @@ environment = ExtResource( 5 )
 
 [node name="World" type="Node2D" parent="."]
 
+[node name="CanvasModulate" type="CanvasModulate" parent="World"]
+modulate = Color( 1, 1, 1, 0 )
+self_modulate = Color( 1, 1, 1, 0 )
+show_behind_parent = true
+color = Color( 0.0980392, 0.0980392, 0.0980392, 1 )
+
 [node name="Player" type="KinematicBody2D" parent="World"]
 z_index = 1
 script = ExtResource( 3 )
@@ -45,7 +51,6 @@ offset = Vector2( 0, -8 )
 [node name="Camera2D" type="Camera2D" parent="World/Player"]
 current = true
 zoom = Vector2( 0.25, 0.25 )
-smoothing_enabled = true
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Player"]
 visible = false
