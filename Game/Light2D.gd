@@ -18,4 +18,3 @@ func _process(_delta):
 	energy = player.health * 1.3
 	energy = player.health * 1.3
 	
-	

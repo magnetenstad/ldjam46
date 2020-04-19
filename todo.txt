@@ -1,0 +1,25 @@
+
+mechanics etc
+    throw fireball
+    camera shake
+
+finalize graphics
+    fix tiling
+    animations?
+
+content
+    add enemies?
+    water dropping from ceiling
+    story?
+    water/lava
+
+sound
+    sound effects
+    music
+
+level design
+
+other
+    menu?
+    screen/camera size
+    
