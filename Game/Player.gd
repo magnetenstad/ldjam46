@@ -7,6 +7,8 @@ var jump = 150
 var spd_max = 80
 var burns = []
 
+var bonfire
+
 var flammable = [0, 1, 2]
 
 var health = 1
@@ -21,6 +23,10 @@ func _on_ready():
 	 pass
 
 func _physics_process(delta):
+	
+	if(bonfire):
+		health = 1
+	
 	velocity.y += grav * delta
 	
 	if Input.is_action_pressed("ui_left"):

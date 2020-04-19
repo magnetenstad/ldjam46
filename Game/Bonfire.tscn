@@ -36,7 +36,7 @@ visible = false
 position = Vector2( 0.427185, 0.996769 )
 frames = SubResource( 1 )
 animation = "fire"
-frame = 3
+frame = 5
 playing = true
 
 [node name="Light2D" type="Light2D" parent="."]
@@ -50,3 +50,4 @@ shadow_enabled = true
 position = Vector2( -0.170513, 8.26998 )
 shape = SubResource( 2 )
 [connection signal="body_entered" from="." to="." method="_on_Bonfire_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_Bonfire_body_exited"]
