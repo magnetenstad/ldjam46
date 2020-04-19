@@ -100,4 +100,4 @@ func _physics_process(delta):
 			health = 1
 			wood.queue_free()
 	
-	health = max(0, health - 0.1 * delta)	
+	health = max(0, health - 0.05 * delta)	

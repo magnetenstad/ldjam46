@@ -60,7 +60,7 @@ occluder = SubResource( 2 )
 scale = Vector2( 0.462974, 0.462974 )
 texture = ExtResource( 6 )
 texture_scale = 4.0
-color = Color( 1, 0.627451, 0, 1 )
+color = Color( 1, 0.894118, 0.713726, 1 )
 range_height = 1.0
 shadow_enabled = true
 script = ExtResource( 9 )
@@ -96,4 +96,4 @@ position = Vector2( 195.828, 110.49 )
 position = Vector2( 234.644, 111.378 )
 
 [node name="Bonfire" parent="World" instance=ExtResource( 10 )]
-position = Vector2( 278.447, 110.426 )
+position = Vector2( 278.447, 112.466 )

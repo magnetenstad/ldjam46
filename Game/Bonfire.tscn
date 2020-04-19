@@ -36,14 +36,14 @@ visible = false
 position = Vector2( 0.427185, 0.996769 )
 frames = SubResource( 1 )
 animation = "fire"
-frame = 5
+frame = 2
 playing = true
 
 [node name="Light2D" type="Light2D" parent="."]
 enabled = false
 texture = ExtResource( 6 )
 color = Color( 1, 0.627451, 0, 1 )
-energy = 0.8
+energy = 1.2
 shadow_enabled = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
