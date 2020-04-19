@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://tilemap.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/player.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://Enemy.tscn" type="PackedScene" id=7]
 [ext_resource path="res://Wood.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Light2D.gd" type="Script" id=9]
+[ext_resource path="res://Bonfire.tscn" type="PackedScene" id=10]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 7.9 )
@@ -54,7 +55,6 @@ occluder = SubResource( 2 )
 scale = Vector2( 0.462974, 0.462974 )
 texture = ExtResource( 6 )
 texture_scale = 4.0
-energy = 1.5
 range_height = 1.0
 shadow_enabled = true
 script = ExtResource( 9 )
@@ -88,3 +88,6 @@ position = Vector2( 195.828, 110.49 )
 
 [node name="Wood" parent="World" instance=ExtResource( 8 )]
 position = Vector2( 234.644, 111.378 )
+
+[node name="Bonfire" parent="World" instance=ExtResource( 10 )]
+position = Vector2( 278.447, 110.426 )
