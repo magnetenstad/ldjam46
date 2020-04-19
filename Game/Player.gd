@@ -22,10 +22,14 @@ func image_set_flip(flip):
 func _on_ready():
 	 pass
 
-func _physics_process(delta):
-	
+func _process(delta):
 	if(bonfire):
 		health = 1
+	var light_factor = (max(min((float(150) - get_position().y), float(50)), float(0)) / float(50))
+	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
+	
+
+func _physics_process(delta):
 	
 	velocity.y += grav * delta
 	
