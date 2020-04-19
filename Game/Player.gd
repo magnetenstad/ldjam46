@@ -42,17 +42,24 @@ func _physics_process(delta):
 		image_set_flip(false)
 	if velocity.x < 0:
 		image_set_flip(true)
-		
-	if is_on_floor() and Input.is_action_just_pressed("ui_up"):
-		velocity.y = -jump
 	
 	var tilemap = $"/root/Main/World/TileMap"
 	var pos = tilemap.world_to_map(position)
+	var cell = tilemap.get_cell(pos.x, pos.y)
+	
+	# climb and jump
+	
+	if cell == 9 and Input.is_action_pressed("ui_up"):
+		velocity.y = -jump/4
+	elif is_on_floor() and Input.is_action_just_pressed("ui_up"):
+		velocity.y = -jump
+	
+	
 	pos.y += 1
 	
 	# set fire
 	
-	var cell = tilemap.get_cell(pos.x, pos.y)
+	cell = tilemap.get_cell(pos.x, pos.y)
 	if health > 0 and cell in flammable and Input.is_action_pressed("ui_down"):
 		tilemap.set_cell(pos.x, pos.y, 8)
 		burns.append([floor(rand_range(2, 60)), pos])
@@ -101,3 +108,5 @@ func _physics_process(delta):
 			wood.queue_free()
 	
 	health = max(0, health - 0.05 * delta)	
+
+	

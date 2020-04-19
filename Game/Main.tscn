@@ -32,6 +32,7 @@ environment = ExtResource( 5 )
 [node name="World" type="Node2D" parent="."]
 
 [node name="CanvasModulate" type="CanvasModulate" parent="World"]
+visible = false
 modulate = Color( 1, 1, 1, 0 )
 self_modulate = Color( 1, 1, 1, 0 )
 show_behind_parent = true
