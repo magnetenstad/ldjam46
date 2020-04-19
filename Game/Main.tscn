@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://tilemap.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/player.png" type="Texture" id=2]
@@ -95,6 +95,7 @@ range_height = 1.0
 shadow_enabled = true
 script = ExtResource( 9 )
 
+
 [node name="Audio" type="AudioStreamPlayer" parent="World/Player"]
 stream = ExtResource( 11 )
 
@@ -107,6 +108,13 @@ light_mask = 8
 z_index = 1
 z_as_relative = false
 color = Color( 0, 0, 0, 1 )
+
+[node name="AttackArea" type="Area2D" parent="World/Player"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="World/Player/AttackArea"]
+position = Vector2( 10.338, 0 )
+scale = Vector2( 0.546, 1.205 )
+shape = SubResource( 5 )
 
 [node name="TileMap" type="TileMap" parent="World"]
 z_as_relative = false
@@ -187,5 +195,11 @@ position = Vector2( 412.64, 208.453 )
 [node name="Bonfire2" parent="World/Fireplacii" instance=ExtResource( 10 )]
 position = Vector2( 891.159, 912.235 )
 
+
 [node name="Bonfire3" parent="World/Fireplacii" instance=ExtResource( 10 )]
 position = Vector2( 2137.28, -255.28 )
+
+[node name="Wood5" parent="World" instance=ExtResource( 8 )]
+position = Vector2( 175.651, 96.5872 )
+[connection signal="body_entered" from="World/Player/AttackArea" to="World/Player" method="_on_AttackArea_body_entered"]
+[connection signal="body_exited" from="World/Player/AttackArea" to="World/Player" method="_on_AttackArea_body_exited"]

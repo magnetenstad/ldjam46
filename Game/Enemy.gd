@@ -40,3 +40,9 @@ func _physics_process(delta):
 	
 	if is_on_floor() and target.position.y < position.y:
 		velocity.y = -jump
+
+	# slime slukker fakkel
+	for i in get_slide_count():
+		var collision = get_slide_collision(i)
+		if collision.collider.name == "Player":
+			$"../Player".health = 0
