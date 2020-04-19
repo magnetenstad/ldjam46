@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://tilemap.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/player.png" type="Texture" id=2]
@@ -7,6 +7,8 @@
 [ext_resource path="res://default_env.tres" type="Environment" id=5]
 [ext_resource path="res://Assets/softlight.png" type="Texture" id=6]
 [ext_resource path="res://Enemy.tscn" type="PackedScene" id=7]
+[ext_resource path="res://Wood.tscn" type="PackedScene" id=8]
+[ext_resource path="res://Light2D.gd" type="Script" id=9]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 7.9 )
@@ -48,13 +50,14 @@ smoothing_enabled = true
 visible = false
 occluder = SubResource( 2 )
 
-[node name="Light2D2" type="Light2D" parent="World/Player"]
+[node name="Light2D" type="Light2D" parent="World/Player"]
 scale = Vector2( 0.462974, 0.462974 )
 texture = ExtResource( 6 )
 texture_scale = 4.0
 energy = 1.5
 range_height = 1.0
 shadow_enabled = true
+script = ExtResource( 9 )
 
 [node name="TileMap" type="TileMap" parent="World"]
 tile_set = ExtResource( 1 )
@@ -82,3 +85,6 @@ shadow_color = Color( 0.0392157, 0.0117647, 0.0941176, 1 )
 
 [node name="Enemy" parent="World" instance=ExtResource( 7 )]
 position = Vector2( 195.828, 110.49 )
+
+[node name="Wood" parent="World" instance=ExtResource( 8 )]
+position = Vector2( 234.644, 111.378 )

@@ -9,6 +9,8 @@ var burns = []
 
 var flammable = [0, 1, 2]
 
+var health = 0
+
 func point_distance(x0, y0, x1, y1):
 	return sqrt(pow(x1-x0, 2) + pow(y1-y0, 2))
 	
@@ -69,3 +71,12 @@ func _physics_process(delta):
 	
 	if collision and collision.collider == enemy:
 		enemy.queue_free()
+	
+	var world = $"/root/Main/World"
+	
+	if world.has_node("Wood"):
+		var wood = world.get_node("Wood")
+		if point_distance(position.x, position.y, wood.position.x, wood.position.y) < 16:
+			health += 1
+			wood.queue_free()
+		
