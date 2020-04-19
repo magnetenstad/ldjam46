@@ -36,7 +36,6 @@ visible = false
 position = Vector2( 0.427185, 0.996769 )
 frames = SubResource( 1 )
 animation = "fire"
-frame = 4
 playing = true
 
 [node name="Light2D" type="Light2D" parent="."]
