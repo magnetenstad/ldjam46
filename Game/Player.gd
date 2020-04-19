@@ -13,6 +13,8 @@ var flammable = [0, 1, 2]
 
 var health = 1
 
+var enemies_in_range = []
+
 func image_set_flip(flip):
 	get_node("Sprite").set_flip_h(flip)
 	
@@ -24,7 +26,12 @@ func _process(delta):
 		health = 1
 	var light_factor = (max(min((float(150) - get_position().y), float(50)), float(0)) / float(50))
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
-	
+
+func _input(event):
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
+		var buffered_enemies_in_range = enemies_in_range + []
+		for enemy in buffered_enemies_in_range:
+			enemy.queue_free()
 
 func _physics_process(delta):
 	
@@ -87,17 +94,24 @@ func _physics_process(delta):
 
 	var world = $"/root/Main/World"
 	
-	# jump on enemy
-	
-	if world.has_node("Enemy"):
-		var enemy = $"/root/Main/World/Enemy"
-		
-		if get_slide_count():
-			var collision = get_slide_collision(0)
-			
-			if collision and collision.collider == enemy:
-				enemy.queue_free()
+	# slime slukker fakkel
+	for i in get_slide_count():
+		var collision = get_slide_collision(i)
+		if collision.collider.name == "Enemy":
+			health = 0
 			
 	health = max(0, health - 0.05 * delta)	
 
 	
+
+
+func _on_AttackArea_body_entered(body):
+	if(body.name == "Enemy"):
+		enemies_in_range.append(body)
+
+
+func _on_AttackArea_body_exited(body):
+	if(body.name == "Enemy"):
+		for enemy in enemies_in_range:
+			if(enemy == body):
+				enemies_in_range.erase(body)
