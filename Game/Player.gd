@@ -13,6 +13,9 @@ var health = 1
 
 func point_distance(x0, y0, x1, y1):
 	return sqrt(pow(x1-x0, 2) + pow(y1-y0, 2))
+
+func image_set_flip(flip):
+	get_node("Sprite").set_flip_h(flip)
 	
 func _on_ready():
 	 pass
@@ -27,10 +30,15 @@ func _physics_process(delta):
 	else:
 		velocity.x *= 0.9
 	
-	if Input.is_action_just_pressed("ui_up"):
-		velocity.y = -jump
+	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
-	velocity = move_and_slide(velocity)
+	if velocity.x > 0:
+		image_set_flip(false)
+	if velocity.x < 0:
+		image_set_flip(true)
+		
+	if is_on_floor() and Input.is_action_just_pressed("ui_up"):
+		velocity.y = -jump
 	
 	var tilemap = $"/root/Main/World/TileMap"
 	var pos = tilemap.world_to_map(position)
@@ -63,18 +71,23 @@ func _physics_process(delta):
 					tilemap.set_cell(other.x, other.y, 8)
 					burns.append([floor(rand_range(0, 60)), other])
 	
+	
+
+	var world = $"/root/Main/World"
+	
 	# jump on enemy
 	
-	var enemy = $"/root/Main/World/Enemy"
-	
-	var collision = get_slide_collision(0)
-	
-	if collision and collision.collider == enemy:
-		enemy.queue_free()
-	
+	if world.has_node("Enemy"):
+		var enemy = $"/root/Main/World/Enemy"
+		
+		if get_slide_count():
+			var collision = get_slide_collision(0)
+			
+			if collision and collision.collider == enemy:
+				enemy.queue_free()
+			
 	# wood
 	
-	var world = $"/root/Main/World"
 	
 	if world.has_node("Wood"):
 		var wood = world.get_node("Wood")
