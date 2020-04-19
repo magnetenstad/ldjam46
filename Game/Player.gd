@@ -53,10 +53,11 @@ func _physics_process(delta):
 	# set fire
 	
 	var cell = tilemap.get_cell(pos.x, pos.y)
-	if cell in flammable and Input.is_action_pressed("ui_down"):
+	if health > 0 and cell in flammable and Input.is_action_pressed("ui_down"):
 		tilemap.set_cell(pos.x, pos.y, 8)
-		burns.append([floor(rand_range(0, 60)), pos])
-	
+		burns.append([floor(rand_range(1, 60)), pos])
+		health = 1
+		
 	# fire spreading
 	
 	for i in range(burns.size()):
@@ -73,11 +74,9 @@ func _physics_process(delta):
 			
 			for other in others:
 				cell = tilemap.get_cell(other.x, other.y)
-				if cell in flammable and burn[0] == 20:
+				if burn[0] == 1 and cell in flammable:
 					tilemap.set_cell(other.x, other.y, 8)
-					burns.append([floor(rand_range(0, 60)), other])
-	
-	
+					burns.append([floor(rand_range(1, 60)), other])
 
 	var world = $"/root/Main/World"
 	
