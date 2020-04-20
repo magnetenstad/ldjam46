@@ -10,13 +10,13 @@ enum TILE {
 	LADDER = 5,
 	PLATFORM = 6,
 	WATER = 7,
+	FUEL = 8,
 }
 
 var flammable = [TILE.WOOD, TILE.LEAF]
 
 var burns = []
 onready var firemap = $"/root/Main/World/FireTileMap"
-onready var audio = $"/root/Main/World/Player/Audio"
 
 func _ready():
 	pass # Replace with function body.
@@ -27,7 +27,7 @@ func burn(pos):
 		set_cell(pos.x, pos.y, -1)
 		firemap.set_cell(pos.x, pos.y, TILE.FIRE)
 		burns.append([floor(rand_range(2, 60)), pos])
-		audio.play()
+		$"/root/Main/AudioManager".play_sound("fire", map_to_world(Vector2(pos.x, pos.y)))
 		return true
 	else:
 		return false
@@ -53,4 +53,4 @@ func _process(delta):
 					firemap.set_cell(other.x, other.y, TILE.FIRE)
 					set_cell(other.x, other.y, -1)
 					burns.append([floor(rand_range(2, 60)), other])
-					audio.play()
+					$"/root/Main/AudioManager".play_sound("fire", map_to_world(Vector2(other.x, other.y)))

@@ -13,4 +13,5 @@ func _physics_process(delta):
 			continue
 		if collision.collider.name == "Player":
 			get_tree().get_root().find_node("Player", true, false).health = 0
+		$"/root/Main/AudioManager".play_sound("slime", get_position())
 		queue_free()
