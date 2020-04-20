@@ -10,6 +10,7 @@ enum TILE {
 	LADDER = 5,
 	PLATFORM = 6,
 	WATER = 7,
+	FUEL = 8,
 }
 
 var flammable = [TILE.WOOD, TILE.LEAF]

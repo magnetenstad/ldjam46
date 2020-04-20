@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://Assets/player.png" type="Texture" id=2]
 [ext_resource path="res://Player.gd" type="Script" id=3]
@@ -6,7 +6,6 @@
 [ext_resource path="res://default_env.tres" type="Environment" id=5]
 [ext_resource path="res://Assets/softlight.png" type="Texture" id=6]
 [ext_resource path="res://Enemy.tscn" type="PackedScene" id=7]
-[ext_resource path="res://Wood.tscn" type="PackedScene" id=8]
 [ext_resource path="res://Light2D.gd" type="Script" id=9]
 [ext_resource path="res://Bonfire.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/bit.wav" type="AudioStream" id=11]
@@ -162,11 +161,6 @@ position = Vector2( 689.145, 304.321 )
 
 [node name="Bonfire4" parent="World/Level/Fireplaces" instance=ExtResource( 10 )]
 position = Vector2( 426.216, 112.121 )
-
-[node name="Wood" type="Node2D" parent="World/Level"]
-
-[node name="Wood" parent="World/Level/Wood" instance=ExtResource( 8 )]
-position = Vector2( 72.1022, 371.024 )
 
 [node name="Enemy" parent="World/Level" instance=ExtResource( 7 )]
 position = Vector2( 340.321, 358.445 )

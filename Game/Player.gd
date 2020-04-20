@@ -36,19 +36,8 @@ func _process(delta):
 		health = 1
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
 
-func _input(event):
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed and not is_dead:
-		last_mouse_pos = (get_global_mouse_position() - position).normalized() * 32
-		var buffered_enemies_in_range = enemies_in_range + []
-		for enemy in buffered_enemies_in_range:
-			enemy.queue_free()
-
-func _draw():
-	last_mouse_pos = lerp(last_mouse_pos, Vector2(), 0.05)
-	draw_line(Vector2(), last_mouse_pos, Color(1, 1, 1), 2)
-
 func _physics_process(delta):
-	update()
+	
 	# respawn to checkpoint
 
 	if Input.is_key_pressed(KEY_R):
@@ -63,7 +52,7 @@ func _physics_process(delta):
 			is_dead = false
 
 	# gravity and movement input
-
+	
 	velocity.y += grav * delta
 
 	if Input.is_action_pressed("ui_left"):
@@ -74,7 +63,7 @@ func _physics_process(delta):
 		image_set_flip(false)
 	else:
 		velocity.x *= 0.9
-
+	
 	# move
 	if not is_dead:
 		velocity = move_and_slide(velocity, Vector2(0, -1))
@@ -89,17 +78,26 @@ func _physics_process(delta):
 
 	if Input.is_action_pressed("ui_up"):
 		if cell == tilemap.TILE.LADDER:
-			velocity.y = -jump/3
+			velocity.y = min(velocity.y, -jump/3)
 		elif is_on_floor():
 			velocity.y = -jump
-
+	
+	# fuel
+	
+	if cell == tilemap.TILE.FUEL:
+		tilemap.set_cell(pos.x, pos.y, -1)
+		tiles_removed_list.append([pos.x, pos.y, cell])
+		health = 1
+		audio.play()
+	
+	# water
+	
+	if cell == tilemap.TILE.WATER:
+		health = 0
+		
 	# set fire
 
 	var direction = -(int(get_node("Sprite").is_flipped_h())*2-1) # 1: left, 0: right
-
-	if health > 0 and (Input.is_action_pressed("ui_down")):
-		if tilemap.burn(Vector2(pos.x + direction, pos.y)) or tilemap.burn(Vector2(pos.x, pos.y + 1)) or tilemap.burn(Vector2(pos.x, pos.y - 1)):
-			health = 1
 
 	# shoot fireball
 
@@ -131,6 +129,11 @@ func _physics_process(delta):
 		is_dead = true
 	else:
 		gameover_message.hide()
+		
+	# pick up fuel
+	
+	
+	tiles_removed_list
 
 func _on_AttackArea_body_entered(body):
 	if(body.name == "Enemy"):
