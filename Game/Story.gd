@@ -7,16 +7,16 @@ var seen_stories = []
 func play(story_name):
 	var story
 	if story_name == "story_begin":
-		story = "You must visit your grandma, as she is dying."
+		story = "Your mother just pushed you into the hole!\n She screams: KEEP THAT LIGHT ON!"
 		
 	elif story_name == "story_fiery_cavern":
-		story = "To get to her, you must pass \nthrough the fiery cavern."
+		story = "Your mothers voice echoes: \nDo not press space! It will waste your light!"
 		
 	elif story_name == "story_warcrimes":
 		story = "Someone must have comitted horrible\nwar crimes here. I can feel it."
 		
-	elif story_name == "sss":
-		story = "b"
+	elif story_name == "story_bonfire":
+		story = "Your grandpa once told you about bonfires. He said they give\neternal light, once lit."
 		
 	elif story_name == "sss":
 		story = "b"
