@@ -52,6 +52,10 @@ func _process(delta):
 			step_timer = 0
 	else:
 		step_timer = 0
+	if(abs(velocity.x) > 10):
+		$Sprite.animation = "run"
+	else:
+		$Sprite.animation = "stand"
 
 func _physics_process(delta):
 
@@ -81,7 +85,7 @@ func _physics_process(delta):
 		velocity.x = min(velocity.x + acc * delta, spd_max)
 		image_set_flip(false)
 	else:
-		velocity.x *= 0.9
+		velocity.x *= 0.85
 
 	# move
 	if not is_dead:
