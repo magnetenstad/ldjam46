@@ -1,6 +1,5 @@
-[gd_scene load_steps=30 format=2]
+[gd_scene load_steps=29 format=2]
 
-[ext_resource path="res://AudioManager.gd" type="Script" id=1]
 [ext_resource path="res://Pixeled.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/player.png" type="Texture" id=2]
 [ext_resource path="res://Player.gd" type="Script" id=3]
@@ -8,6 +7,7 @@
 [ext_resource path="res://default_env.tres" type="Environment" id=5]
 [ext_resource path="res://Assets/softlight.png" type="Texture" id=6]
 [ext_resource path="res://Enemy.tscn" type="PackedScene" id=7]
+[ext_resource path="res://AudioManager.gd" type="Script" id=8]
 [ext_resource path="res://Light2D.gd" type="Script" id=9]
 [ext_resource path="res://Bonfire.tscn" type="PackedScene" id=10]
 [ext_resource path="res://TileMap.gd" type="Script" id=12]
@@ -15,52 +15,52 @@
 [ext_resource path="res://Assets/tiles1.tres" type="TileSet" id=14]
 [ext_resource path="res://Achievement.gd" type="Script" id=15]
 
+[sub_resource type="CanvasItemMaterial" id=1]
+blend_mode = 1
+
 [sub_resource type="CanvasItemMaterial" id=2]
 blend_mode = 1
 
-[sub_resource type="CanvasItemMaterial" id=3]
+[sub_resource type="DynamicFont" id=3]
+font_data = ExtResource( 1 )
+
+[sub_resource type="CanvasItemMaterial" id=4]
 blend_mode = 1
 
-[sub_resource type="DynamicFont" id=9]
+[sub_resource type="CanvasItemMaterial" id=5]
+blend_mode = 1
+
+[sub_resource type="DynamicFont" id=6]
 font_data = ExtResource( 1 )
+
+[sub_resource type="CanvasItemMaterial" id=7]
+blend_mode = 1
+
+[sub_resource type="DynamicFont" id=8]
+font_data = ExtResource( 1 )
+
+[sub_resource type="RectangleShape2D" id=9]
+extents = Vector2( 4, 7.9 )
+
+[sub_resource type="OccluderPolygon2D" id=10]
+polygon = PoolVector2Array( -4.00137, 7.8611, -4.09742, 3.9552, -5.95432, 4.01923, -5.95432, -0.943193, -4.03339, -2.03172, -4.00137, -9.07516, -2.88082, -10.0036, 2.97803, -9.9716, 2.97803, -2.09576, 1.95354, -1.03924, 3.84246, -0.0787716, 5.9875, 2.00224, 5.92347, 4.01923, 2.91401, 3.9552, 3.07408, 7.89312, -0.0314331, 7.98916, -0.0314331, 4.9797, -0.959885, 4.9797, -0.991901, 7.82909 )
+
+[sub_resource type="RectangleShape2D" id=11]
 
 [sub_resource type="CanvasItemMaterial" id=12]
 blend_mode = 1
 
-[sub_resource type="CanvasItemMaterial" id=14]
-blend_mode = 1
-
-[sub_resource type="DynamicFont" id=10]
-font_data = ExtResource( 1 )
-
-[sub_resource type="CanvasItemMaterial" id=15]
-blend_mode = 1
-
-[sub_resource type="DynamicFont" id=11]
-font_data = ExtResource( 1 )
-
-[sub_resource type="RectangleShape2D" id=1]
-extents = Vector2( 4, 7.9 )
-
-[sub_resource type="OccluderPolygon2D" id=4]
-polygon = PoolVector2Array( -4.00137, 7.8611, -4.09742, 3.9552, -5.95432, 4.01923, -5.95432, -0.943193, -4.03339, -2.03172, -4.00137, -9.07516, -2.88082, -10.0036, 2.97803, -9.9716, 2.97803, -2.09576, 1.95354, -1.03924, 3.84246, -0.0787716, 5.9875, 2.00224, 5.92347, 4.01923, 2.91401, 3.9552, 3.07408, 7.89312, -0.0314331, 7.98916, -0.0314331, 4.9797, -0.959885, 4.9797, -0.991901, 7.82909 )
-
-[sub_resource type="RectangleShape2D" id=5]
-
-[sub_resource type="CanvasItemMaterial" id=6]
-blend_mode = 1
-
-[sub_resource type="Gradient" id=7]
+[sub_resource type="Gradient" id=13]
 colors = PoolColorArray( 0.143594, 0.140813, 0.283203, 1, 0.330783, 0.578245, 0.607422, 1 )
 
-[sub_resource type="GradientTexture" id=8]
-gradient = SubResource( 7 )
+[sub_resource type="GradientTexture" id=14]
+gradient = SubResource( 13 )
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
 
 [node name="AudioManager" type="Node" parent="."]
-script = ExtResource( 1 )
+script = ExtResource( 8 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 5 )
@@ -71,7 +71,7 @@ environment = ExtResource( 5 )
 
 [node name="GameOverMessage" type="Control" parent="World/CanvasLayer"]
 visible = false
-material = SubResource( 2 )
+material = SubResource( 1 )
 margin_left = -37.7731
 margin_top = -20.3897
 margin_right = 2.2269
@@ -81,13 +81,13 @@ __meta__ = {
 }
 
 [node name="Label" type="Label" parent="World/CanvasLayer/GameOverMessage"]
-material = SubResource( 3 )
+material = SubResource( 2 )
 margin_left = 38.0
 margin_top = 20.0
 margin_right = 675.0
 margin_bottom = 380.0
 rect_scale = Vector2( 0.5, 0.5 )
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 3 )
 text = "You failed to
 keep the fire alive.
 Press R to respawn"
@@ -99,7 +99,7 @@ __meta__ = {
 
 [node name="Achievement" type="Control" parent="World/CanvasLayer"]
 visible = false
-material = SubResource( 12 )
+material = SubResource( 4 )
 margin_right = 40.0
 margin_bottom = 40.0
 script = ExtResource( 15 )
@@ -108,12 +108,12 @@ __meta__ = {
 }
 
 [node name="AchievedText" type="Label" parent="World/CanvasLayer/Achievement"]
-material = SubResource( 14 )
+material = SubResource( 5 )
 margin_top = 20.0
 margin_right = 640.0
 margin_bottom = 66.0
 rect_scale = Vector2( 0.5, 0.5 )
-custom_fonts/font = SubResource( 10 )
+custom_fonts/font = SubResource( 6 )
 text = "cat in the jar"
 align = 1
 __meta__ = {
@@ -121,11 +121,11 @@ __meta__ = {
 }
 
 [node name="Label2" type="Label" parent="World/CanvasLayer/Achievement"]
-material = SubResource( 15 )
+material = SubResource( 7 )
 margin_right = 457.0
 margin_bottom = 46.0
 rect_scale = Vector2( 0.7, 0.7 )
-custom_fonts/font = SubResource( 11 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0.372549, 0.619608, 0.741176, 1 )
 text = "Achievement!"
 align = 1
@@ -141,7 +141,7 @@ z_index = 1
 script = ExtResource( 3 )
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/Player"]
-shape = SubResource( 1 )
+shape = SubResource( 9 )
 
 [node name="Sprite" type="Sprite" parent="World/Player"]
 texture = ExtResource( 2 )
@@ -153,7 +153,7 @@ smoothing_enabled = true
 
 [node name="LightOccluder2D" type="LightOccluder2D" parent="World/Player"]
 visible = false
-occluder = SubResource( 4 )
+occluder = SubResource( 10 )
 
 [node name="Light2D" type="Light2D" parent="World/Player"]
 modulate = Color( 1, 1, 1, 0 )
@@ -174,11 +174,10 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/Player/AttackArea"]
 position = Vector2( 10.338, 0 )
 scale = Vector2( 0.546, 1.205 )
-shape = SubResource( 5 )
+shape = SubResource( 11 )
 
 [node name="CanvasModulate" type="CanvasModulate" parent="World"]
 process_priority = 2
-visible = false
 modulate = Color( 1, 1, 1, 0 )
 self_modulate = Color( 1, 1, 1, 0 )
 z_index = 1
@@ -196,7 +195,7 @@ tile_data = PoolIntArray( -196606, 0, 65539, -196605, 0, 131073, -196604, 0, 131
 script = ExtResource( 12 )
 
 [node name="FireTileMap" type="TileMap" parent="World"]
-material = SubResource( 6 )
+material = SubResource( 12 )
 z_as_relative = false
 tile_set = ExtResource( 14 )
 cell_size = Vector2( 16, 16 )
@@ -237,7 +236,7 @@ position = Vector2( -1000.12, -941.966 )
 rotation = 1.57081
 scale = Vector2( 1.32188, -4453.87 )
 z_index = -1
-texture = SubResource( 8 )
+texture = SubResource( 14 )
 centered = false
 __meta__ = {
 "_edit_lock_": true

@@ -17,8 +17,6 @@ var last_mouse_pos = Vector2()
 var tiles_removed_list = []
 var flammable = [0, 1]
 
-const SFXCONST = preload("res://SFX.tscn")
-
 var health = 1
 
 var step_timer = 0
@@ -64,7 +62,7 @@ func _physics_process(delta):
 		if position != last_checkpoint_position or health == 0:
 			position = last_checkpoint_position
 			health = 1
-			$"/root/Main/AudioManager".play_sound("fire", get_position())
+			#$"/root/Main/AudioManager".play_sound("fire", get_position())
 			is_dead = false
 
 	# gravity and movement input
@@ -106,7 +104,7 @@ func _physics_process(delta):
 		tilemap.set_cell(pos.x, pos.y, -1)
 		tiles_removed_list.append([pos.x, pos.y, cell])
 		health = 1
-		audio.play()
+		$"/root/Main/AudioManager".play_sound("pickup", get_position())
 
 	# water
 
