@@ -15,6 +15,6 @@ func _ready():
 func _process(_delta):
 	var player = $"/root/Main/World/Player"
 	
-	energy = player.health * 1.3
-	energy = player.health * 1.3
+	energy = pow(player.health, 0.4) + 0.35
+	print(energy, player.health)
 	

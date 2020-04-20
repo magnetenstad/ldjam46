@@ -12,8 +12,8 @@ func play(story_name):
 	elif story_name == "story_fiery_cavern":
 		story = "To get to her, you must pass \nthrough the fiery cavern."
 		
-	elif story_name == "sss":
-		story = "b"
+	elif story_name == "story_warcrimes":
+		story = "Someone must have comitted horrible\nwar crimes here. I can feel it."
 		
 	elif story_name == "sss":
 		story = "b"
