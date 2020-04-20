@@ -5,10 +5,12 @@ var acc = 400
 var grav = 300
 var jump = 150
 var spd_max = 80
+var timer = 0
 var is_dead = false
 var burns = []
-onready var gameover_message = $"/root/Main/World/Player/Camera2D/Control"
+onready var gameover_message = $"/root/Main/World/CanvasLayer/GameOverMessage"
 onready var audio = $"Audio"
+onready var achievement = $"/root/Main/World/CanvasLayer/Achievement"
 var FIREBALL = load("res://Fireball.tscn")
 var bonfire
 var last_checkpoint_position = Vector2(0, 0)
@@ -20,10 +22,12 @@ var health = 1
 
 var enemies_in_range = []
 
+
 func image_set_flip(flip):
 	get_node("Sprite").set_flip_h(flip)
 
 func _process(delta):
+	timer += delta
 	if bonfire:
 		health = 1
 		if (last_checkpoint_position - position).length() > 128:
@@ -69,6 +73,7 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_left"):
 		velocity.x = max(velocity.x - acc * delta, -spd_max)
 		image_set_flip(true)
+		achievement.get("Movin left")
 	elif Input.is_action_pressed("ui_right"):
 		velocity.x = min(velocity.x + acc * delta, spd_max)
 		image_set_flip(false)
@@ -90,6 +95,7 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_up"):
 		if cell == tilemap.TILE.LADDER:
 			velocity.y = -jump/3
+			achievement.get("Ladderman")
 		elif is_on_floor():
 			velocity.y = -jump
 
@@ -111,6 +117,7 @@ func _physics_process(delta):
 		fireball.direction = direction
 		fireball.position = position + Vector2(direction * 16, 0)
 		health -= 0.1
+		achievement.get("Shooting tootin")
 
 	# slime slukker fakkel
 
