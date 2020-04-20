@@ -24,7 +24,7 @@ func image_set_flip(flip):
 	get_node("Sprite").set_flip_h(flip)
 
 func _process(delta):
-	if(bonfire):
+	if bonfire:
 		health = 1
 		if (last_checkpoint_position - position).length() > 4:
 			audio.play()
