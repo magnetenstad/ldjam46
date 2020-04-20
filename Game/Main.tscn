@@ -250,22 +250,6 @@ position = Vector2( 426.216, 112.121 )
 [node name="Bonfire5" parent="World/Level/Fireplaces" instance=ExtResource( 10 )]
 position = Vector2( 1135.36, 560.624 )
 
-[node name="Wood" type="Node2D" parent="World/Level"]
-
-[node name="Wood" parent="World/Level/Wood" instance=ExtResource( 8 )]
-position = Vector2( 72.1022, 371.024 )
-
-[node name="Wood2" parent="World/Level/Wood" instance=ExtResource( 8 )]
-position = Vector2( 1207.67, 295.601 )
-
-[node name="Wood3" parent="World/Level/Wood" instance=ExtResource( 8 )]
-position = Vector2( 1434, 452.579 )
-
-[node name="Wood4" parent="World/Level/Wood" instance=ExtResource( 8 )]
-position = Vector2( 1204.02, 365.144 )
-
-[node name="Wood5" parent="World/Level/Wood" instance=ExtResource( 8 )]
-position = Vector2( 919.762, 469.4 )
 
 [node name="Watersources" type="Node2D" parent="World/Level"]
 
