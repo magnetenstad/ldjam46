@@ -125,7 +125,7 @@ func _physics_process(delta):
 		var collision = get_slide_collision(i)
 		if collision.collider == null:
 			continue
-		if collision.collider.name == "Enemy":
+		if "Enemy" in collision.collider.name :
 			health = 0
 		if collision.collider.name == "WaterDroplet":
 			health = 0

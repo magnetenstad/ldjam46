@@ -18,7 +18,7 @@ func _physics_process(delta):
 	
 		if get_slide_count():
 			var coll = get_slide_collision(0).collider
-			if coll is KinematicBody2D and coll.name == "Enemy":
+			if coll is KinematicBody2D and "Enemy" in coll.name:
 				coll.queue_free()
 				seconds_alive = 2
 			if coll.name == "TileMap":
