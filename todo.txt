@@ -1,15 +1,9 @@
 
-mechanics etc
-    throw fireball
-    camera shake
-
 finalize graphics
-    fix tiling
     animations?
 
 content
     add enemies?
-    water dropping from ceiling
     story?
     water/lava
 
