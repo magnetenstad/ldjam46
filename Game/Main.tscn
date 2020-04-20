@@ -189,15 +189,23 @@ position = Vector2( 2231.96, -88.4903 )
 [node name="Wood5" parent="World/Level/Wood" instance=ExtResource( 8 )]
 position = Vector2( 175.651, 96.5872 )
 
-[node name="Enemy" parent="World/Level" instance=ExtResource( 7 )]
-position = Vector2( 596.764, 120.057 )
+[node name="Enemies" type="Node2D" parent="World/Level"]
+
+[node name="Enemy" parent="World/Level/Enemies" instance=ExtResource( 7 )]
+position = Vector2( 457.259, 337.398 )
+
+[node name="Enemy2" parent="World/Level/Enemies" instance=ExtResource( 7 )]
+position = Vector2( 267.566, 273.373 )
 
 [node name="Background" type="Sprite" parent="World"]
-position = Vector2( 2518.59, 1568.28 )
+position = Vector2( -1137.94, -745.278 )
 rotation = 1.57081
 scale = Vector2( 1.32188, -4453.87 )
 z_index = -1
 texture = SubResource( 8 )
 centered = false
+__meta__ = {
+"_edit_lock_": true
+}
 [connection signal="body_entered" from="World/Player/AttackArea" to="World/Player" method="_on_AttackArea_body_entered"]
 [connection signal="body_exited" from="World/Player/AttackArea" to="World/Player" method="_on_AttackArea_body_exited"]
