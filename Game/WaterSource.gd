@@ -12,5 +12,3 @@ func _process(delta):
 		timer = 0
 		var water_droplet = WATER_DROPLET.instance()
 		add_child_below_node(self, water_droplet)
-		print("test")
-		#water_droplet.set_position(get_position())
