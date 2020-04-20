@@ -6,8 +6,9 @@ var grav = 300
 var jump = 150
 var spd_max = 80
 var burns = []
-onready var gameover_message= $"/root/Main/World/Player/Camera2D/Control"
+onready var gameover_message = $"/root/Main/World/Player/Camera2D/Control"
 onready var audio = $"Audio"
+var FIREBALL = load("res://Fireball.tscn")
 var bonfire
 var last_checkpoint_position = Vector2(0, 0)
 var last_mouse_pos = Vector2()
@@ -20,10 +21,6 @@ var enemies_in_range = []
 
 func image_set_flip(flip):
 	get_node("Sprite").set_flip_h(flip)
-	
-	
-func _on_ready():
-	pass
 
 func _process(delta):
 	if(bonfire):
@@ -47,108 +44,82 @@ func _draw():
 	
 func _physics_process(delta):
 	update()
-	velocity.y += grav * delta
-	
-	if Input.is_key_pressed(KEY_A):
-		velocity.x = max(velocity.x - acc * delta, -spd_max)
-	elif Input.is_key_pressed(KEY_D):
-		velocity.x = min(velocity.x + acc * delta, spd_max)
-	else:
-		velocity.x *= 0.9
-	
-	velocity = move_and_slide(velocity, Vector2(0, -1))
-	
-	if velocity.x > 0:
-		image_set_flip(false)
-	if velocity.x < 0:
-		image_set_flip(true)
-	
-	var tilemap = $"/root/Main/World/TileMap"
-	var firemap = $"/root/Main/World/FireTileMap"
-	var pos = tilemap.world_to_map(position)
-	var cell = tilemap.get_cell(pos.x, pos.y)
-	
-	# climb and jump
-	if cell == 9 and Input.is_key_pressed(KEY_W):
-		velocity.y = -jump/3
-	elif is_on_floor() and Input.is_key_pressed(KEY_W):
-		velocity.y = -jump
 	# respawn to checkpoint
 	
 	if Input.is_key_pressed(KEY_R):
 		if position != last_checkpoint_position or health == 0:
 			position = last_checkpoint_position
-			jump = 150
-			spd_max = 80
 			health = 1
 			audio.play()
+			
+	# gravity and movement input
+	
+	velocity.y += grav * delta
+	
+	if Input.is_action_pressed("ui_left"):
+		velocity.x = max(velocity.x - acc * delta, -spd_max)
+		image_set_flip(true)
+	elif Input.is_action_pressed("ui_right"):
+		velocity.x = min(velocity.x + acc * delta, spd_max)
+		image_set_flip(false)
+	else:
+		velocity.x *= 0.9
+	
+	# move
+	
+	velocity = move_and_slide(velocity, Vector2(0, -1))
+	
+	# get cell
+	
+	var tilemap = $"/root/Main/World/TileMap"
+	var pos = tilemap.world_to_map(position)
+	var cell = tilemap.get_cell(pos.x, pos.y)
+	
+	# climb and jump
+	
+	if Input.is_action_pressed("ui_up"):
+		if cell == 9:
+			velocity.y = -jump/3
+		elif is_on_floor():
+			velocity.y = -jump
 	
 	# set fire
 	
 	var direction = -(int(get_node("Sprite").is_flipped_h())*2-1) # 1: left, 0: right
-								
-	if health > 0 and Input.is_key_pressed(KEY_S):
-		var firepos = Vector2(-42069, -42069)
-		if tilemap.get_cell(pos.x + direction, pos.y) in flammable:
-			firepos = Vector2(pos.x+direction, pos.y)
-		elif tilemap.get_cell(pos.x, pos.y-1) in flammable:
-			firepos = Vector2(pos.x, pos.y-1)
-		elif tilemap.get_cell(pos.x, pos.y+1) in flammable:
-			firepos = Vector2(pos.x, pos.y+1)
-			
-		if firepos != Vector2(-42069, -42069):
-			tilemap.set_cell(firepos.x, firepos.y, 8)
-			firemap.set_cell(firepos.x, firepos.y, 8)
-			burns.append([floor(rand_range(2, 60)), firepos])
-			health = 1
-			audio.play()
-		
-	# fire spreading
 	
-	for i in range(burns.size()):
-		var burn = burns[i]
-		pos = burn[1]
-		burn[0] -= 1
-		
-		if burn[0] <= 0:
-			firemap.set_cell(pos.x, pos.y, -1)
-			tilemap.set_cell(pos.x, pos.y, -1)
-			burns.remove(i)
-			break
-		else:
-			var others = [Vector2(pos.x - 1, pos.y), Vector2(pos.x, pos.y - 1), Vector2(pos.x + 1, pos.y), Vector2(pos.x, pos.y + 1)]
+	if health > 0 and Input.is_action_pressed("ui_down"):
+		if tilemap.burn(Vector2(pos.x + direction, pos.y)) or tilemap.burn(Vector2(pos.x, pos.y + 1)) or tilemap.burn(Vector2(pos.x, pos.y - 1)):
+			health = 1
 			
-			for other in others:
-				cell = tilemap.get_cell(other.x, other.y)
-				if burn[0] == 1 and cell in flammable:
-					tilemap.set_cell(other.x, other.y, 8)
-					firemap.set_cell(other.x, other.y, 8)
-					burns.append([floor(rand_range(2, 60)), other])
-					audio.play()
-
+	# shoot fireball
+	
 	var world = $"/root/Main/World"
 	
+	if Input.is_action_just_pressed("ui_select"):
+		var fireball = FIREBALL.instance()
+		world.add_child(fireball)
+		fireball.direction = direction
+		fireball.position = position + Vector2(direction * 16, 0)
+
 	# slime slukker fakkel
+	
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
 		if collision.collider.name == "Enemy":
 			health = 0
 			
 	health = max(0, health - 0.05 * delta)
-	if health == 0:
+	
+	if health <= 0:
 		gameover_message.show()
 		spd_max = 0
 		jump = 0
 	else:
 		gameover_message.hide()
 
-	
-
-
 func _on_AttackArea_body_entered(body):
 	if(body.name == "Enemy"):
 		enemies_in_range.append(body)
-
 
 func _on_AttackArea_body_exited(body):
 	if(body.name == "Enemy"):
