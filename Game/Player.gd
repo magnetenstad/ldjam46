@@ -5,6 +5,7 @@ var acc = 400
 var grav = 300
 var jump = 150
 var spd_max = 80
+var is_dead = false
 var burns = []
 onready var gameover_message = $"/root/Main/World/Player/Camera2D/Control"
 onready var audio = $"Audio"
@@ -28,11 +29,13 @@ func _process(delta):
 		if (last_checkpoint_position - position).length() > 4:
 			audio.play()
 		last_checkpoint_position = position
-	var light_factor = (max(min((float(150) - get_position().y), float(50)), float(0)) / float(50))
+	var light_factor = 1 - (clamp(get_position().y, 200, 300) - 200) / 100
+	print(get_position().y)
+	print(clamp(float(-get_position().y) + float(100), -100.0, 0))
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
 
 func _input(event):
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed:
+	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed and not is_dead:
 		last_mouse_pos = (get_global_mouse_position() - position).normalized() * 32
 		var buffered_enemies_in_range = enemies_in_range + []
 		for enemy in buffered_enemies_in_range:
@@ -51,6 +54,7 @@ func _physics_process(delta):
 			position = last_checkpoint_position
 			health = 1
 			audio.play()
+			is_dead = false
 			
 	# gravity and movement input
 	
@@ -66,8 +70,8 @@ func _physics_process(delta):
 		velocity.x *= 0.9
 	
 	# move
-	
-	velocity = move_and_slide(velocity, Vector2(0, -1))
+	if not is_dead:
+		velocity = move_and_slide(velocity, Vector2(0, -1))
 	
 	# get cell
 	
@@ -87,7 +91,7 @@ func _physics_process(delta):
 	
 	var direction = -(int(get_node("Sprite").is_flipped_h())*2-1) # 1: left, 0: right
 	
-	if health > 0 and Input.is_action_pressed("ui_down"):
+	if health > 0 and (Input.is_action_pressed("ui_down")):
 		if tilemap.burn(Vector2(pos.x + direction, pos.y)) or tilemap.burn(Vector2(pos.x, pos.y + 1)) or tilemap.burn(Vector2(pos.x, pos.y - 1)):
 			health = 1
 			
@@ -107,13 +111,15 @@ func _physics_process(delta):
 		var collision = get_slide_collision(i)
 		if collision.collider.name == "Enemy":
 			health = 0
+		if collision.collider.name == "WaterDroplet":
+			health = 0
+			collision.collider.queue_free()
 			
 	health = max(0, health - 0.05 * delta)
 	
 	if health <= 0:
 		gameover_message.show()
-		spd_max = 0
-		jump = 0
+		is_dead = true
 	else:
 		gameover_message.hide()
 
