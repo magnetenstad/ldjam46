@@ -34,7 +34,7 @@ func _process(delta):
 		if (last_checkpoint_position - position).length() > 128:
 			tiles_removed_list = []
 		last_checkpoint_position = position
-	var light_factor = 1 - (clamp(get_position().y, 200, 300) - 200) / 100
+	var light_factor = 1 - (clamp(get_position().y, 64, 192) - 64) / 128
 	if(light_factor == 1):
 		health = 1
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
