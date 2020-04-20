@@ -13,7 +13,7 @@ var FIREBALL = load("res://Fireball.tscn")
 var bonfire
 var last_checkpoint_position = Vector2(0, 0)
 var last_mouse_pos = Vector2()
-
+var tiles_removed_list = []
 var flammable = [0, 1]
 
 var health = 1
@@ -26,6 +26,8 @@ func image_set_flip(flip):
 func _process(delta):
 	if(bonfire):
 		health = 1
+		if (last_checkpoint_position - position).length() > 128:
+			tiles_removed_list = []
 		if (last_checkpoint_position - position).length() > 4:
 			audio.play()
 		last_checkpoint_position = position
@@ -48,6 +50,10 @@ func _physics_process(delta):
 	# respawn to checkpoint
 	
 	if Input.is_key_pressed(KEY_R):
+		for tile in tiles_removed_list:
+			$"/root/Main/World/TileMap".set_cell(tile[0], tile[1], tile[2])
+			$"/root/Main/World/TileMap".firemap.set_cell(tile[0], tile[1], -1)
+		$"/root/Main/World/TileMap".burns = []
 		if position != last_checkpoint_position or health == 0:
 			position = last_checkpoint_position
 			health = 1
@@ -97,11 +103,12 @@ func _physics_process(delta):
 	
 	var world = $"/root/Main/World"
 	
-	if Input.is_action_just_pressed("ui_select"):
+	if Input.is_action_just_pressed("ui_select") and health > 0.1:
 		var fireball = FIREBALL.instance()
 		world.add_child(fireball)
 		fireball.direction = direction
 		fireball.position = position + Vector2(direction * 16, 0)
+		health -= 0.1
 
 	# slime slukker fakkel
 	
