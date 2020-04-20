@@ -29,7 +29,9 @@ func _process(delta):
 		if (last_checkpoint_position - position).length() > 4:
 			audio.play()
 		last_checkpoint_position = position
-	var light_factor = (max(min((float(150) - get_position().y), float(50)), float(0)) / float(50))
+	var light_factor = 1 - (clamp(get_position().y, 200, 300) - 200) / 100
+	print(get_position().y)
+	print(clamp(float(-get_position().y) + float(100), -100.0, 0))
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
 
 func _input(event):
