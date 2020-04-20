@@ -31,9 +31,11 @@ func _physics_process(delta):
 			
 		if is_on_floor():
 			velocity.y = -jump
+			$"/root/Main/AudioManager".play_sound("fire_lit", get_position())
 		
 		if is_on_wall():
 			direction *= -1
+			$"/root/Main/AudioManager".play_sound("fire_lit", get_position())
 			
 		velocity.x = spd_max * direction
 		velocity.y += grav * delta
