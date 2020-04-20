@@ -30,8 +30,7 @@ func _process(delta):
 			audio.play()
 		last_checkpoint_position = position
 	var light_factor = 1 - (clamp(get_position().y, 200, 300) - 200) / 100
-	print(get_position().y)
-	print(clamp(float(-get_position().y) + float(100), -100.0, 0))
+	health = max(health, light_factor)
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
 
 func _input(event):
