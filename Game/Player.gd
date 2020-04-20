@@ -109,7 +109,7 @@ func _physics_process(delta):
 	# water
 
 	if cell == tilemap.TILE.WATER:
-		health = 0
+		health -= delta * 3
 
 	# set fire
 
@@ -120,6 +120,7 @@ func _physics_process(delta):
 	var world = $"/root/Main/World"
 
 	if Input.is_action_just_pressed("ui_select") and health > 0.1:
+		$"/root/Main/AudioManager".play_sound("fire_lit", get_position())
 		var fireball = FIREBALL.instance()
 		world.add_child(fireball)
 		fireball.direction = direction

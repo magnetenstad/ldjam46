@@ -33,9 +33,10 @@ texture = ExtResource( 1 )
 
 [node name="AnimatedSprite" type="AnimatedSprite" parent="."]
 visible = false
-position = Vector2( 0.427185, 0.996769 )
+position = Vector2( 0.427, 1.203 )
 frames = SubResource( 1 )
 animation = "fire"
+frame = 5
 playing = true
 
 [node name="Light2D" type="Light2D" parent="."]
