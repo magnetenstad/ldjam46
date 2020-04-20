@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=2]
+[gd_scene load_steps=30 format=2]
 
 [ext_resource path="res://Pixeled.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://Assets/player.png" type="Texture" id=2]
@@ -43,9 +43,6 @@ font_data = ExtResource( 1 )
 
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 4, 7.9 )
-
-[sub_resource type="OccluderPolygon2D" id=10]
-polygon = PoolVector2Array( -4.00137, 7.8611, -4.09742, 3.9552, -5.95432, 4.01923, -5.95432, -0.943193, -4.03339, -2.03172, -4.00137, -9.07516, -2.88082, -10.0036, 2.97803, -9.9716, 2.97803, -2.09576, 1.95354, -1.03924, 3.84246, -0.0787716, 5.9875, 2.00224, 5.92347, 4.01923, 2.91401, 3.9552, 3.07408, 7.89312, -0.0314331, 7.98916, -0.0314331, 4.9797, -0.959885, 4.9797, -0.991901, 7.82909 )
 
 [sub_resource type="RectangleShape2D" id=11]
 
@@ -179,10 +176,6 @@ offset = Vector2( 0, -8 )
 current = true
 smoothing_enabled = true
 
-[node name="LightOccluder2D" type="LightOccluder2D" parent="World/Player"]
-visible = false
-occluder = SubResource( 10 )
-
 [node name="Light2D" type="Light2D" parent="World/Player"]
 modulate = Color( 1, 1, 1, 0 )
 self_modulate = Color( 1, 1, 1, 0 )
@@ -249,7 +242,6 @@ position = Vector2( 426.216, 112.121 )
 
 [node name="Bonfire5" parent="World/Level/Fireplaces" instance=ExtResource( 10 )]
 position = Vector2( 1135.36, 560.624 )
-
 
 [node name="Watersources" type="Node2D" parent="World/Level"]
 
