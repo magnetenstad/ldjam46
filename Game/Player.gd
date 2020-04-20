@@ -107,6 +107,9 @@ func _physics_process(delta):
 		var collision = get_slide_collision(i)
 		if collision.collider.name == "Enemy":
 			health = 0
+		if collision.collider.name == "WaterDroplet":
+			health = 0
+			collision.collider.queue_free()
 			
 	health = max(0, health - 0.05 * delta)
 	
