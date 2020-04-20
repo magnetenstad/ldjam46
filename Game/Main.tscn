@@ -1,7 +1,7 @@
-[gd_scene load_steps=31 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://Pixeled.ttf" type="DynamicFontData" id=1]
-[ext_resource path="res://Assets/player.png" type="Texture" id=2]
+[ext_resource path="res://Assets/player5.png" type="Texture" id=2]
 [ext_resource path="res://Player.gd" type="Script" id=3]
 [ext_resource path="res://Main.gd" type="Script" id=4]
 [ext_resource path="res://default_env.tres" type="Environment" id=5]
@@ -10,12 +10,20 @@
 [ext_resource path="res://AudioManager.gd" type="Script" id=8]
 [ext_resource path="res://Light2D.gd" type="Script" id=9]
 [ext_resource path="res://Bonfire.tscn" type="PackedScene" id=10]
+[ext_resource path="res://Assets/Audio/BeepBox-Song.wav" type="AudioStream" id=11]
 [ext_resource path="res://TileMap.gd" type="Script" id=12]
 [ext_resource path="res://WaterSource.tscn" type="PackedScene" id=13]
 [ext_resource path="res://Assets/tiles1.tres" type="TileSet" id=14]
 [ext_resource path="res://Achievement.gd" type="Script" id=15]
 [ext_resource path="res://Story.tscn" type="PackedScene" id=16]
 [ext_resource path="res://Story.gd" type="Script" id=17]
+[ext_resource path="res://Assets/player7.png" type="Texture" id=18]
+[ext_resource path="res://Assets/player8.png" type="Texture" id=19]
+[ext_resource path="res://Assets/player2.png" type="Texture" id=20]
+[ext_resource path="res://Assets/player3.png" type="Texture" id=21]
+[ext_resource path="res://Assets/player1.png" type="Texture" id=22]
+[ext_resource path="res://Assets/player4.png" type="Texture" id=23]
+[ext_resource path="res://Assets/player6.png" type="Texture" id=24]
 
 [sub_resource type="CanvasItemMaterial" id=1]
 blend_mode = 1
@@ -44,22 +52,37 @@ font_data = ExtResource( 1 )
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 4, 7.9 )
 
-[sub_resource type="OccluderPolygon2D" id=10]
-polygon = PoolVector2Array( -4.00137, 7.8611, -4.09742, 3.9552, -5.95432, 4.01923, -5.95432, -0.943193, -4.03339, -2.03172, -4.00137, -9.07516, -2.88082, -10.0036, 2.97803, -9.9716, 2.97803, -2.09576, 1.95354, -1.03924, 3.84246, -0.0787716, 5.9875, 2.00224, 5.92347, 4.01923, 2.91401, 3.9552, 3.07408, 7.89312, -0.0314331, 7.98916, -0.0314331, 4.9797, -0.959885, 4.9797, -0.991901, 7.82909 )
+[sub_resource type="SpriteFrames" id=14]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 24 ), ExtResource( 18 ), ExtResource( 19 ) ],
+"loop": true,
+"name": "run",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 22 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 23 ) ],
+"loop": true,
+"name": "stand",
+"speed": 5.0
+} ]
 
-[sub_resource type="RectangleShape2D" id=11]
+[sub_resource type="RectangleShape2D" id=10]
 
-[sub_resource type="CanvasItemMaterial" id=12]
+[sub_resource type="CanvasItemMaterial" id=11]
 blend_mode = 1
 
-[sub_resource type="Gradient" id=13]
+[sub_resource type="Gradient" id=12]
 colors = PoolColorArray( 0.143594, 0.140813, 0.283203, 1, 0.330783, 0.578245, 0.607422, 1 )
 
-[sub_resource type="GradientTexture" id=14]
-gradient = SubResource( 13 )
+[sub_resource type="GradientTexture" id=13]
+gradient = SubResource( 12 )
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 11 )
+volume_db = -23.223
+autoplay = true
 
 [node name="AudioManager" type="Node" parent="."]
 script = ExtResource( 8 )
@@ -170,17 +193,15 @@ script = ExtResource( 3 )
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/Player"]
 shape = SubResource( 9 )
 
-[node name="Sprite" type="Sprite" parent="World/Player"]
-texture = ExtResource( 2 )
+[node name="Sprite" type="AnimatedSprite" parent="World/Player"]
+frames = SubResource( 14 )
+animation = "stand"
+playing = true
 offset = Vector2( 0, -8 )
 
 [node name="Camera2D" type="Camera2D" parent="World/Player"]
 current = true
 smoothing_enabled = true
-
-[node name="LightOccluder2D" type="LightOccluder2D" parent="World/Player"]
-visible = false
-occluder = SubResource( 10 )
 
 [node name="Light2D" type="Light2D" parent="World/Player"]
 modulate = Color( 1, 1, 1, 0 )
@@ -201,7 +222,7 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/Player/AttackArea"]
 position = Vector2( 10.338, 0 )
 scale = Vector2( 0.546, 1.205 )
-shape = SubResource( 11 )
+shape = SubResource( 10 )
 
 [node name="CanvasModulate" type="CanvasModulate" parent="World"]
 process_priority = 2
@@ -223,7 +244,7 @@ tile_data = PoolIntArray( -4128540, 5, 0, -4063004, 5, 0, -3997468, 5, 0, -39319
 script = ExtResource( 12 )
 
 [node name="FireTileMap" type="TileMap" parent="World"]
-material = SubResource( 12 )
+material = SubResource( 11 )
 z_as_relative = false
 tile_set = ExtResource( 14 )
 cell_size = Vector2( 16, 16 )
@@ -359,7 +380,7 @@ position = Vector2( -1000.12, -1045.21 )
 rotation = 1.57081
 scale = Vector2( 1.88146, -5367.61 )
 z_index = -1
-texture = SubResource( 14 )
+texture = SubResource( 13 )
 centered = false
 __meta__ = {
 "_edit_lock_": true

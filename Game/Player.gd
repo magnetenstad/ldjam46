@@ -17,6 +17,8 @@ var last_mouse_pos = Vector2()
 var tiles_removed_list = []
 var flammable = [0, 1]
 
+var respawn_timer = 0
+
 var health = 1
 
 var step_timer = 0
@@ -28,13 +30,14 @@ func image_set_flip(flip):
 	get_node("Sprite").set_flip_h(flip)
 
 func _process(delta):
+	respawn_timer += delta
 	timer += delta
 	if bonfire:
 		health = 1
 		if (last_checkpoint_position - position).length() > 128:
 			tiles_removed_list = []
 		last_checkpoint_position = position
-	var light_factor = 1 - (clamp(get_position().y, 200, 300) - 200) / 100
+	var light_factor = 1 - (clamp(get_position().y, 64, 192) - 64) / 128
 	if(light_factor == 1):
 		health = 1
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
@@ -49,6 +52,10 @@ func _process(delta):
 			step_timer = 0
 	else:
 		step_timer = 0
+	if(abs(velocity.x) > 10):
+		$Sprite.animation = "run"
+	else:
+		$Sprite.animation = "stand"
 
 func _physics_process(delta):
 
@@ -60,6 +67,7 @@ func _physics_process(delta):
 			$"/root/Main/World/TileMap".firemap.set_cell(tile[0], tile[1], -1)
 		$"/root/Main/World/TileMap".burns = []
 		if position != last_checkpoint_position or health == 0:
+			respawn_timer = 0
 			position = last_checkpoint_position
 			health = 1
 			#$"/root/Main/AudioManager".play_sound("fire", get_position())
@@ -77,7 +85,7 @@ func _physics_process(delta):
 		velocity.x = min(velocity.x + acc * delta, spd_max)
 		image_set_flip(false)
 	else:
-		velocity.x *= 0.9
+		velocity.x *= 0.85
 
 	# move
 	if not is_dead:
@@ -109,7 +117,7 @@ func _physics_process(delta):
 	# water
 
 	if cell == tilemap.TILE.WATER:
-		health = 0
+		health -= delta * 3
 
 	# set fire
 
@@ -120,6 +128,7 @@ func _physics_process(delta):
 	var world = $"/root/Main/World"
 
 	if Input.is_action_just_pressed("ui_select") and health > 0.1:
+		$"/root/Main/AudioManager".play_sound("fire_lit", get_position())
 		var fireball = FIREBALL.instance()
 		world.add_child(fireball)
 		fireball.direction = direction
@@ -135,8 +144,10 @@ func _physics_process(delta):
 			continue
 
 		if "Enemy" in collision.collider.name :
-			$"/root/Main/AudioManager".play_sound("slime", get_position())
-			health = 0
+			if(respawn_timer >= 0.5 && health != 0):
+				$"/root/Main/AudioManager".play_sound("slime", get_position())
+				health = 0
+				respawn_timer = 0
 			
 		if collision.collider.name == "WaterDroplet":
 			$"/root/Main/AudioManager".play_sound("slime", get_position())
@@ -147,6 +158,7 @@ func _physics_process(delta):
 
 	if health <= 0:
 		gameover_message.show()
+		respawn_timer = 0
 		is_dead = true
 	else:
 		gameover_message.hide()

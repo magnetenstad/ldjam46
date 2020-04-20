@@ -45,6 +45,7 @@ func _physics_process(delta):
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
 		if collision.collider.name == "Player":
-			if(get_tree().get_root().find_node("Player", true, false).health != 0):
+			if(get_tree().get_root().find_node("Player", true, false).respawn_timer >= 0.5 && get_tree().get_root().find_node("Player", true, false).health != 0):
 				$"/root/Main/AudioManager".play_sound("slime", get_position())
-			get_tree().get_root().find_node("Player", true, false).health = 0
+				get_tree().get_root().find_node("Player", true, false).health = 0
+				get_tree().get_root().find_node("Player", true, false).respawn_timer = 0

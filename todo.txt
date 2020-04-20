@@ -2,13 +2,7 @@
 finalize graphics
     animations?
 
-content
-    add enemies?
-    story?
-    water/lava
-
 sound
-    sound effects
     music
 
 level design
