@@ -1,6 +1,17 @@
 extends TileMap
 
-var flammable = [0, 1]
+enum TILE {
+	EMPTY = -1,
+	DIRT = 0,
+	STONE = 1,
+	WOOD = 2,
+	LEAF = 3,
+	FIRE = 4,
+	LADDER = 5,
+	PLATFORM = 6
+}
+
+var flammable = [2, 3]
 var burns = []
 onready var firemap = $"/root/Main/World/FireTileMap"
 onready var audio = $"/root/Main/World/Player/Audio"
@@ -10,8 +21,7 @@ func _ready():
 
 func burn(pos):
 	if get_cell(pos.x, pos.y) in flammable:
-		set_cell(pos.x, pos.y, -1)
-		firemap.set_cell(pos.x, pos.y, 8)
+		firemap.set_cell(pos.x, pos.y, TILE.FIRE)
 		burns.append([floor(rand_range(2, 60)), pos])
 		audio.play()
 		return true
@@ -26,6 +36,7 @@ func _process(delta):
 		
 		if burn[0] <= 0:
 			firemap.set_cell(pos.x, pos.y, -1)
+			set_cell(pos.x, pos.y, TILE.EMPTY)
 			burns.remove(i)
 			break
 		else:
@@ -34,8 +45,6 @@ func _process(delta):
 			for other in others:
 				var cell = get_cell(other.x, other.y)
 				if burn[0] == 1 and cell in flammable:
-					firemap.set_cell(other.x, other.y, 8)
-					set_cell(other.x, other.y, -1)
+					firemap.set_cell(other.x, other.y, TILE.FIRE)
 					burns.append([floor(rand_range(2, 60)), other])
 					audio.play()
-	

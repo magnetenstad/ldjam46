@@ -14,8 +14,6 @@ var bonfire
 var last_checkpoint_position = Vector2(0, 0)
 var last_mouse_pos = Vector2()
 
-var flammable = [0, 1]
-
 var health = 1
 
 var enemies_in_range = []
@@ -82,7 +80,7 @@ func _physics_process(delta):
 	# climb and jump
 	
 	if Input.is_action_pressed("ui_up"):
-		if cell == 9:
+		if cell == tilemap.TILE.LADDER:
 			velocity.y = -jump/3
 		elif is_on_floor():
 			velocity.y = -jump
