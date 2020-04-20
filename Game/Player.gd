@@ -5,11 +5,11 @@ var acc = 400
 var grav = 300
 var jump = 150
 var spd_max = 80
+var timer = 0
 var is_dead = false
 var burns = []
-onready var gameover_message = $"/root/Main/World/Player/Camera2D/Control"
-onready var step = $"Step"
-onready var fire = $"Fire"
+onready var gameover_message = $"/root/Main/World/CanvasLayer/GameOverMessage"
+onready var achievement = $"/root/Main/World/CanvasLayer/Achievement"
 var FIREBALL = load("res://Fireball.tscn")
 var bonfire
 var last_checkpoint_position = Vector2(0, 0)
@@ -25,10 +25,12 @@ var step_timer = 0
 
 var enemies_in_range = []
 
+
 func image_set_flip(flip):
 	get_node("Sprite").set_flip_h(flip)
 
 func _process(delta):
+	timer += delta
 	if bonfire:
 		health = 1
 		if (last_checkpoint_position - position).length() > 128:
@@ -38,7 +40,7 @@ func _process(delta):
 	if(light_factor == 1):
 		health = 1
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
-	
+
 	if(abs(velocity.x) <= 1):
 		step_timer = 0
 	elif(is_on_floor()):
@@ -50,19 +52,8 @@ func _process(delta):
 	else:
 		step_timer = 0
 
-func _input(event):
-	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed and not is_dead:
-		last_mouse_pos = (get_global_mouse_position() - position).normalized() * 32
-		var buffered_enemies_in_range = enemies_in_range + []
-		for enemy in buffered_enemies_in_range:
-			enemy.queue_free()
-
-func _draw():
-	last_mouse_pos = lerp(last_mouse_pos, Vector2(), 0.05)
-	draw_line(Vector2(), last_mouse_pos, Color(1, 1, 1), 2)
-
 func _physics_process(delta):
-	update()
+
 	# respawn to checkpoint
 
 	if Input.is_key_pressed(KEY_R):
@@ -83,6 +74,7 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_left"):
 		velocity.x = max(velocity.x - acc * delta, -spd_max)
 		image_set_flip(true)
+		achievement.get("Movin left")
 	elif Input.is_action_pressed("ui_right"):
 		velocity.x = min(velocity.x + acc * delta, spd_max)
 		image_set_flip(false)
@@ -103,17 +95,27 @@ func _physics_process(delta):
 
 	if Input.is_action_pressed("ui_up"):
 		if cell == tilemap.TILE.LADDER:
-			velocity.y = -jump/3
+			velocity.y = min(velocity.y, -jump/3)
+			achievement.get("Ladderman")
 		elif is_on_floor():
 			velocity.y = -jump
+
+	# fuel
+
+	if cell == tilemap.TILE.FUEL:
+		tilemap.set_cell(pos.x, pos.y, -1)
+		tiles_removed_list.append([pos.x, pos.y, cell])
+		health = 1
+		audio.play()
+
+	# water
+
+	if cell == tilemap.TILE.WATER:
+		health = 0
 
 	# set fire
 
 	var direction = -(int(get_node("Sprite").is_flipped_h())*2-1) # 1: left, 0: right
-
-	if health > 0 and (Input.is_action_pressed("ui_down")):
-		if tilemap.burn(Vector2(pos.x + direction, pos.y)) or tilemap.burn(Vector2(pos.x, pos.y + 1)) or tilemap.burn(Vector2(pos.x, pos.y - 1)):
-			health = 1
 
 	# shoot fireball
 
@@ -125,6 +127,7 @@ func _physics_process(delta):
 		fireball.direction = direction
 		fireball.position = position + Vector2(direction * 16, 0)
 		health -= 0.1
+		achievement.get("Shooting tootin")
 
 	# slime slukker fakkel
 
@@ -147,6 +150,11 @@ func _physics_process(delta):
 		is_dead = true
 	else:
 		gameover_message.hide()
+
+	# pick up fuel
+
+
+	tiles_removed_list
 
 func _on_AttackArea_body_entered(body):
 	if(body.name == "Enemy"):
