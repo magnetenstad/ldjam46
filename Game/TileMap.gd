@@ -8,10 +8,12 @@ enum TILE {
 	LEAF = 3,
 	FIRE = 4,
 	LADDER = 5,
-	PLATFORM = 6
+	PLATFORM = 6,
+	WATER = 7,
 }
 
-var flammable = [2, 3]
+var flammable = [TILE.WOOD, TILE.LEAF]
+
 var burns = []
 onready var firemap = $"/root/Main/World/FireTileMap"
 onready var audio = $"/root/Main/World/Player/Audio"
