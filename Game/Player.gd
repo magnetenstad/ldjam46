@@ -5,10 +5,12 @@ var acc = 400
 var grav = 300
 var jump = 150
 var spd_max = 80
+var timer = 0
 var is_dead = false
 var burns = []
-onready var gameover_message = $"/root/Main/World/Player/Camera2D/Control"
+onready var gameover_message = $"/root/Main/World/CanvasLayer/GameOverMessage"
 onready var audio = $"Audio"
+onready var achievement = $"/root/Main/World/CanvasLayer/Achievement"
 var FIREBALL = load("res://Fireball.tscn")
 var bonfire
 var last_checkpoint_position = Vector2(0, 0)
@@ -20,10 +22,12 @@ var health = 1
 
 var enemies_in_range = []
 
+
 func image_set_flip(flip):
 	get_node("Sprite").set_flip_h(flip)
 
 func _process(delta):
+	timer += delta
 	if bonfire:
 		health = 1
 		if (last_checkpoint_position - position).length() > 128:
@@ -37,7 +41,7 @@ func _process(delta):
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
 
 func _physics_process(delta):
-	
+
 	# respawn to checkpoint
 
 	if Input.is_key_pressed(KEY_R):
@@ -52,18 +56,19 @@ func _physics_process(delta):
 			is_dead = false
 
 	# gravity and movement input
-	
+
 	velocity.y += grav * delta
 
 	if Input.is_action_pressed("ui_left"):
 		velocity.x = max(velocity.x - acc * delta, -spd_max)
 		image_set_flip(true)
+		achievement.get("Movin left")
 	elif Input.is_action_pressed("ui_right"):
 		velocity.x = min(velocity.x + acc * delta, spd_max)
 		image_set_flip(false)
 	else:
 		velocity.x *= 0.9
-	
+
 	# move
 	if not is_dead:
 		velocity = move_and_slide(velocity, Vector2(0, -1))
@@ -79,22 +84,23 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_up"):
 		if cell == tilemap.TILE.LADDER:
 			velocity.y = min(velocity.y, -jump/3)
+			achievement.get("Ladderman")
 		elif is_on_floor():
 			velocity.y = -jump
-	
+
 	# fuel
-	
+
 	if cell == tilemap.TILE.FUEL:
 		tilemap.set_cell(pos.x, pos.y, -1)
 		tiles_removed_list.append([pos.x, pos.y, cell])
 		health = 1
 		audio.play()
-	
+
 	# water
-	
+
 	if cell == tilemap.TILE.WATER:
 		health = 0
-		
+
 	# set fire
 
 	var direction = -(int(get_node("Sprite").is_flipped_h())*2-1) # 1: left, 0: right
@@ -109,6 +115,7 @@ func _physics_process(delta):
 		fireball.direction = direction
 		fireball.position = position + Vector2(direction * 16, 0)
 		health -= 0.1
+		achievement.get("Shooting tootin")
 
 	# slime slukker fakkel
 
@@ -129,10 +136,10 @@ func _physics_process(delta):
 		is_dead = true
 	else:
 		gameover_message.hide()
-		
+
 	# pick up fuel
-	
-	
+
+
 	tiles_removed_list
 
 func _on_AttackArea_body_entered(body):
