@@ -24,14 +24,16 @@ func image_set_flip(flip):
 	get_node("Sprite").set_flip_h(flip)
 
 func _process(delta):
-	if(bonfire):
+	if bonfire:
 		health = 1
 		if (last_checkpoint_position - position).length() > 128:
 			tiles_removed_list = []
 		if (last_checkpoint_position - position).length() > 4:
 			audio.play()
 		last_checkpoint_position = position
-	var light_factor = (max(min((float(150) - get_position().y), float(50)), float(0)) / float(50))
+	var light_factor = 1 - (clamp(get_position().y, 200, 300) - 200) / 100
+	if(light_factor == 1):
+		health = 1
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
 
 func _input(event):
@@ -40,15 +42,15 @@ func _input(event):
 		var buffered_enemies_in_range = enemies_in_range + []
 		for enemy in buffered_enemies_in_range:
 			enemy.queue_free()
-		
+
 func _draw():
 	last_mouse_pos = lerp(last_mouse_pos, Vector2(), 0.05)
 	draw_line(Vector2(), last_mouse_pos, Color(1, 1, 1), 2)
-	
+
 func _physics_process(delta):
 	update()
 	# respawn to checkpoint
-	
+
 	if Input.is_key_pressed(KEY_R):
 		for tile in tiles_removed_list:
 			$"/root/Main/World/TileMap".set_cell(tile[0], tile[1], tile[2])
@@ -59,11 +61,11 @@ func _physics_process(delta):
 			health = 1
 			audio.play()
 			is_dead = false
-			
+
 	# gravity and movement input
-	
+
 	velocity.y += grav * delta
-	
+
 	if Input.is_action_pressed("ui_left"):
 		velocity.x = max(velocity.x - acc * delta, -spd_max)
 		image_set_flip(true)
@@ -72,37 +74,37 @@ func _physics_process(delta):
 		image_set_flip(false)
 	else:
 		velocity.x *= 0.9
-	
+
 	# move
 	if not is_dead:
 		velocity = move_and_slide(velocity, Vector2(0, -1))
-	
+
 	# get cell
-	
+
 	var tilemap = $"/root/Main/World/TileMap"
 	var pos = tilemap.world_to_map(position)
 	var cell = tilemap.get_cell(pos.x, pos.y)
-	
+
 	# climb and jump
-	
+
 	if Input.is_action_pressed("ui_up"):
-		if cell == 9:
+		if cell == tilemap.TILE.LADDER:
 			velocity.y = -jump/3
 		elif is_on_floor():
 			velocity.y = -jump
-	
+
 	# set fire
-	
+
 	var direction = -(int(get_node("Sprite").is_flipped_h())*2-1) # 1: left, 0: right
-	
+
 	if health > 0 and (Input.is_action_pressed("ui_down")):
 		if tilemap.burn(Vector2(pos.x + direction, pos.y)) or tilemap.burn(Vector2(pos.x, pos.y + 1)) or tilemap.burn(Vector2(pos.x, pos.y - 1)):
 			health = 1
-			
+
 	# shoot fireball
-	
+
 	var world = $"/root/Main/World"
-	
+
 	if Input.is_action_just_pressed("ui_select") and health > 0.1:
 		var fireball = FIREBALL.instance()
 		world.add_child(fireball)
@@ -111,17 +113,19 @@ func _physics_process(delta):
 		health -= 0.1
 
 	# slime slukker fakkel
-	
+
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
+		if collision.collider == null:
+			continue
 		if collision.collider.name == "Enemy":
 			health = 0
 		if collision.collider.name == "WaterDroplet":
 			health = 0
 			collision.collider.queue_free()
-			
+
 	health = max(0, health - 0.05 * delta)
-	
+
 	if health <= 0:
 		gameover_message.show()
 		is_dead = true
