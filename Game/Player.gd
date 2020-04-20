@@ -8,7 +8,8 @@ var spd_max = 80
 var is_dead = false
 var burns = []
 onready var gameover_message = $"/root/Main/World/Player/Camera2D/Control"
-onready var audio = $"Audio"
+onready var step = $"Step"
+onready var fire = $"Fire"
 var FIREBALL = load("res://Fireball.tscn")
 var bonfire
 var last_checkpoint_position = Vector2(0, 0)
@@ -16,7 +17,11 @@ var last_mouse_pos = Vector2()
 var tiles_removed_list = []
 var flammable = [0, 1]
 
+const SFXCONST = preload("res://SFX.tscn")
+
 var health = 1
+
+var step_timer = 0
 
 var enemies_in_range = []
 
@@ -28,13 +33,22 @@ func _process(delta):
 		health = 1
 		if (last_checkpoint_position - position).length() > 128:
 			tiles_removed_list = []
-		if (last_checkpoint_position - position).length() > 4:
-			audio.play()
 		last_checkpoint_position = position
 	var light_factor = 1 - (clamp(get_position().y, 200, 300) - 200) / 100
 	if(light_factor == 1):
 		health = 1
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
+	
+	if(abs(velocity.x) <= 1):
+		step_timer = 0
+	elif(is_on_floor()):
+		step_timer += delta
+		if(step_timer > 0.12 * (80/abs(velocity.x))):
+			print("test")
+			$"/root/Main/AudioManager".play_sound("step_stone", get_position())
+			step_timer = 0
+	else:
+		step_timer = 0
 
 func _input(event):
 	if event is InputEventMouseButton and event.button_index == BUTTON_LEFT and event.pressed and not is_dead:
@@ -59,7 +73,7 @@ func _physics_process(delta):
 		if position != last_checkpoint_position or health == 0:
 			position = last_checkpoint_position
 			health = 1
-			audio.play()
+			$"/root/Main/AudioManager".play_sound("fire", get_position())
 			is_dead = false
 
 	# gravity and movement input
@@ -119,8 +133,10 @@ func _physics_process(delta):
 		if collision.collider == null:
 			continue
 		if collision.collider.name == "Enemy":
+			$"/root/Main/AudioManager".play_sound("slime", get_position())
 			health = 0
 		if collision.collider.name == "WaterDroplet":
+			$"/root/Main/AudioManager".play_sound("slime", get_position())
 			health = 0
 			collision.collider.queue_free()
 

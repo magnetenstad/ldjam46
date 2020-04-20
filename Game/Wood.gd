@@ -1,10 +1,10 @@
 extends Node2D
-onready var audio = $"/root/Main/World/Player/Audio"
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 
+const SFXCONST = preload("res://SFX.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -17,7 +17,7 @@ func _process(delta):
 	var player = $"/root/Main/World/Player"
 	
 	if position.distance_to(player.position) < 16:
-		audio.play()
+		$"/root/Main/AudioManager".play_sound("pickup", get_position())
 		player.health = 1
 		queue_free()
 		
