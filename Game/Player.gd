@@ -17,6 +17,8 @@ var last_mouse_pos = Vector2()
 var tiles_removed_list = []
 var flammable = [0, 1]
 
+var respawn_timer = 0
+
 var health = 1
 
 var step_timer = 0
@@ -28,6 +30,7 @@ func image_set_flip(flip):
 	get_node("Sprite").set_flip_h(flip)
 
 func _process(delta):
+	respawn_timer += delta
 	timer += delta
 	if bonfire:
 		health = 1
@@ -60,6 +63,7 @@ func _physics_process(delta):
 			$"/root/Main/World/TileMap".firemap.set_cell(tile[0], tile[1], -1)
 		$"/root/Main/World/TileMap".burns = []
 		if position != last_checkpoint_position or health == 0:
+			respawn_timer = 0
 			position = last_checkpoint_position
 			health = 1
 			#$"/root/Main/AudioManager".play_sound("fire", get_position())
@@ -136,9 +140,10 @@ func _physics_process(delta):
 			continue
 
 		if "Enemy" in collision.collider.name :
-			if(health != 0):
+			if(respawn_timer >= 0.5 && health != 0):
 				$"/root/Main/AudioManager".play_sound("slime", get_position())
 				health = 0
+				respawn_timer = 0
 			
 		if collision.collider.name == "WaterDroplet":
 			$"/root/Main/AudioManager".play_sound("slime", get_position())
@@ -149,6 +154,7 @@ func _physics_process(delta):
 
 	if health <= 0:
 		gameover_message.show()
+		respawn_timer = 0
 		is_dead = true
 	else:
 		gameover_message.hide()
