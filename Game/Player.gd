@@ -30,7 +30,8 @@ func _process(delta):
 			audio.play()
 		last_checkpoint_position = position
 	var light_factor = 1 - (clamp(get_position().y, 200, 300) - 200) / 100
-	health = max(health, light_factor)
+	if(light_factor == 1):
+		health = 1
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
 
 func _input(event):
@@ -108,6 +109,8 @@ func _physics_process(delta):
 	
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
+		if collision.collider == null:
+			continue
 		if collision.collider.name == "Enemy":
 			health = 0
 		if collision.collider.name == "WaterDroplet":
