@@ -135,8 +135,9 @@ func _physics_process(delta):
 			continue
 
 		if "Enemy" in collision.collider.name :
-			$"/root/Main/AudioManager".play_sound("slime", get_position())
-			health = 0
+			if(health != 0):
+				$"/root/Main/AudioManager".play_sound("slime", get_position())
+				health = 0
 			
 		if collision.collider.name == "WaterDroplet":
 			$"/root/Main/AudioManager".play_sound("slime", get_position())
