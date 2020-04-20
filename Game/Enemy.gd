@@ -45,4 +45,4 @@ func _physics_process(delta):
 	for i in get_slide_count():
 		var collision = get_slide_collision(i)
 		if collision.collider.name == "Player":
-			$"../Player".health = 0
+			get_tree().get_root().find_node("Player", true, false).health = 0
