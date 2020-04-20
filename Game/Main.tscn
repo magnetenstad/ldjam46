@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://tilemap.tres" type="TileSet" id=1]
 [ext_resource path="res://Assets/player.png" type="Texture" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://Bonfire.tscn" type="PackedScene" id=10]
 [ext_resource path="res://Assets/bit.wav" type="AudioStream" id=11]
 [ext_resource path="res://TileMap.gd" type="Script" id=12]
+[ext_resource path="res://WaterSource.tscn" type="PackedScene" id=13]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 4, 7.9 )
@@ -100,6 +101,7 @@ script = ExtResource( 9 )
 
 [node name="Audio" type="AudioStreamPlayer" parent="World/Player"]
 stream = ExtResource( 11 )
+volume_db = -19.184
 
 [node name="AttackArea" type="Area2D" parent="World/Player"]
 
@@ -193,11 +195,14 @@ position = Vector2( 175.651, 96.5872 )
 position = Vector2( 596.764, 120.057 )
 
 [node name="Background" type="Sprite" parent="World"]
-position = Vector2( 2518.59, 1568.28 )
+position = Vector2( 2790.86, 1568.28 )
 rotation = 1.57081
 scale = Vector2( 1.32188, -4453.87 )
 z_index = -1
 texture = SubResource( 8 )
 centered = false
+
+[node name="WaterSource" parent="World" instance=ExtResource( 13 )]
+position = Vector2( 470.655, 195.333 )
 [connection signal="body_entered" from="World/Player/AttackArea" to="World/Player" method="_on_AttackArea_body_entered"]
 [connection signal="body_exited" from="World/Player/AttackArea" to="World/Player" method="_on_AttackArea_body_exited"]
