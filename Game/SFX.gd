@@ -8,5 +8,4 @@ func start():
 
 func _process(delta):
 	if (!playing):
-		print(SFX_path)
 		queue_free()

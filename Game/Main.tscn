@@ -52,29 +52,29 @@ font_data = ExtResource( 1 )
 [sub_resource type="RectangleShape2D" id=9]
 extents = Vector2( 4, 7.9 )
 
-[sub_resource type="SpriteFrames" id=14]
+[sub_resource type="SpriteFrames" id=10]
 animations = [ {
-"frames": [ ExtResource( 2 ), ExtResource( 24 ), ExtResource( 18 ), ExtResource( 19 ) ],
-"loop": true,
-"name": "run",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 22 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 23 ) ],
 "loop": true,
 "name": "stand",
 "speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 24 ), ExtResource( 18 ), ExtResource( 19 ) ],
+"loop": true,
+"name": "run",
+"speed": 5.0
 } ]
 
-[sub_resource type="RectangleShape2D" id=10]
+[sub_resource type="RectangleShape2D" id=11]
 
-[sub_resource type="CanvasItemMaterial" id=11]
+[sub_resource type="CanvasItemMaterial" id=12]
 blend_mode = 1
 
-[sub_resource type="Gradient" id=12]
+[sub_resource type="Gradient" id=13]
 colors = PoolColorArray( 0.143594, 0.140813, 0.283203, 1, 0.330783, 0.578245, 0.607422, 1 )
 
-[sub_resource type="GradientTexture" id=13]
-gradient = SubResource( 12 )
+[sub_resource type="GradientTexture" id=14]
+gradient = SubResource( 13 )
 
 [node name="Main" type="Node"]
 script = ExtResource( 4 )
@@ -194,8 +194,9 @@ script = ExtResource( 3 )
 shape = SubResource( 9 )
 
 [node name="Sprite" type="AnimatedSprite" parent="World/Player"]
-frames = SubResource( 14 )
+frames = SubResource( 10 )
 animation = "stand"
+frame = 2
 playing = true
 offset = Vector2( 0, -8 )
 
@@ -222,11 +223,10 @@ __meta__ = {
 [node name="CollisionShape2D" type="CollisionShape2D" parent="World/Player/AttackArea"]
 position = Vector2( 10.338, 0 )
 scale = Vector2( 0.546, 1.205 )
-shape = SubResource( 10 )
+shape = SubResource( 11 )
 
 [node name="CanvasModulate" type="CanvasModulate" parent="World"]
 process_priority = 2
-visible = false
 modulate = Color( 1, 1, 1, 0 )
 self_modulate = Color( 1, 1, 1, 0 )
 z_index = 1
@@ -244,7 +244,7 @@ tile_data = PoolIntArray( -4128540, 5, 0, -4063004, 5, 0, -3997468, 5, 0, -39319
 script = ExtResource( 12 )
 
 [node name="FireTileMap" type="TileMap" parent="World"]
-material = SubResource( 11 )
+material = SubResource( 12 )
 z_as_relative = false
 tile_set = ExtResource( 14 )
 cell_size = Vector2( 16, 16 )
@@ -380,7 +380,7 @@ position = Vector2( -1000.12, -1045.21 )
 rotation = 1.57081
 scale = Vector2( 1.88146, -5367.61 )
 z_index = -1
-texture = SubResource( 13 )
+texture = SubResource( 14 )
 centered = false
 __meta__ = {
 "_edit_lock_": true
