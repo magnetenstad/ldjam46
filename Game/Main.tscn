@@ -187,7 +187,6 @@ __meta__ = {
 wait_time = 4.0
 
 [node name="Player" type="KinematicBody2D" parent="World"]
-position = Vector2( 3200, 920 )
 z_index = 1
 script = ExtResource( 3 )
 
