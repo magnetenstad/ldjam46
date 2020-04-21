@@ -45,6 +45,9 @@ func play(story_name):
 	elif story_name == "story_end":
 		story = "Could there be anything on the other side ... (you won)"
 		$"/root/Main/World/Player".game_ended = true
+	elif story_name == "story_sisyphus":
+		story = "Some would say you are happy now."
+		$"/root/Main/World/CanvasLayer/Achievement".get("Sisyphus")
 		
 	else:
 		story = "lbank"

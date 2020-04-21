@@ -4,7 +4,7 @@ var velocity = Vector2()
 var acc = 400
 var grav = 300
 var jump = 150
-var spd_max = 80
+var spd_max = 150
 var timer = 0
 var is_dead = false
 var burns = []
@@ -47,6 +47,7 @@ func _process(delta):
 		achievement.get("Gamer")
 	if burnt_blocks > 10000:
 		achievement.get("Evneveik")
+
 	if position.y > 10000:
 		achievement.get("Void")
 	
@@ -59,7 +60,9 @@ func _process(delta):
 	if game_ended:
 		light_factor = 1
 		if respawn_timer < 300:
-			achievement.get("Speedrunner")
+			achievement.get("Speedrunner <5m")
+		if respawn_timer < 180:
+			achievement.get("Speedrunner <3m")
 	if(light_factor == 1):
 		health = 1
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
