@@ -38,7 +38,7 @@ func _physics_process(delta):
 	
 	velocity = move_and_slide(velocity, Vector2(0, -1))
 	
-	if is_on_floor() and target.position.y < position.y:
+	if is_on_floor() and rand_range(0, 100) < 1:
 		velocity.y = -jump
 
 	# slime slukker fakkel

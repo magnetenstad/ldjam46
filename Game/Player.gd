@@ -41,7 +41,13 @@ func _process(delta):
 		achievement.get("Grand burner of blocks")
 	if burnt_blocks > 200:
 		achievement.get("Master burner of blocks")
-	if position.y > 50000:
+	if burnt_blocks > 300:
+		achievement.get("Pyromaniac")
+	if burnt_blocks > 1000:
+		achievement.get("Gamer")
+	if burnt_blocks > 10000:
+		achievement.get("Evneveik")
+	if position.y > 10000:
 		achievement.get("Void")
 	
 	if bonfire:
