@@ -66,12 +66,12 @@ func _physics_process(delta):
 			$"/root/Main/World/TileMap".set_cell(tile[0], tile[1], tile[2])
 			$"/root/Main/World/TileMap".firemap.set_cell(tile[0], tile[1], -1)
 		$"/root/Main/World/TileMap".burns = []
-		if position != last_checkpoint_position or health == 0:
-			respawn_timer = 0
-			position = last_checkpoint_position
-			health = 1
-			#$"/root/Main/AudioManager".play_sound("fire", get_position())
-			is_dead = false
+		#if position != last_checkpoint_position or health == 0:
+		respawn_timer = 0
+		position = last_checkpoint_position
+		health = 1
+		#$"/root/Main/AudioManager".play_sound("fire", get_position())
+		is_dead = false
 
 	# gravity and movement input
 
