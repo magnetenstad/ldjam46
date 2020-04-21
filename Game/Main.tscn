@@ -196,6 +196,7 @@ shape = SubResource( 9 )
 [node name="Sprite" type="AnimatedSprite" parent="World/Player"]
 frames = SubResource( 10 )
 animation = "stand"
+frame = 1
 playing = true
 offset = Vector2( 0, -8 )
 
@@ -226,7 +227,6 @@ shape = SubResource( 11 )
 
 [node name="CanvasModulate" type="CanvasModulate" parent="World"]
 process_priority = 2
-visible = false
 modulate = Color( 1, 1, 1, 0 )
 self_modulate = Color( 1, 1, 1, 0 )
 z_index = 1

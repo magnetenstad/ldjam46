@@ -16,6 +16,8 @@ var last_checkpoint_position = Vector2(0, 0)
 var last_mouse_pos = Vector2()
 var tiles_removed_list = []
 var flammable = [0, 1]
+var game_ended = false
+var burnt_blocks = 0
 
 var respawn_timer = 0
 
@@ -32,12 +34,26 @@ func image_set_flip(flip):
 func _process(delta):
 	respawn_timer += delta
 	timer += delta
+	
+	if burnt_blocks > 50:
+		achievement.get("Burner of blocks")
+	if burnt_blocks > 100:
+		achievement.get("Grand burner of blocks")
+	if burnt_blocks > 200:
+		achievement.get("Master burner of blocks")
+	if position.y > 50000:
+		achievement.get("Void")
+	
 	if bonfire:
 		health = 1
 		if (last_checkpoint_position - position).length() > 128:
 			tiles_removed_list = []
 		last_checkpoint_position = position
 	var light_factor = 1 - (clamp(get_position().y, 64, 192) - 64) / 128
+	if game_ended:
+		light_factor = 1
+		if respawn_timer < 300:
+			achievement.get("Speedrunner")
 	if(light_factor == 1):
 		health = 1
 	$"../CanvasModulate".color = Color(0.0 + 1 * light_factor, 0.0 + 1 * light_factor, 0.0 + 1 * light_factor)
@@ -79,7 +95,6 @@ func _physics_process(delta):
 	if Input.is_action_pressed("ui_left"):
 		velocity.x = max(velocity.x - acc * delta, -spd_max)
 		image_set_flip(true)
-		achievement.get("Movin left")
 	elif Input.is_action_pressed("ui_right"):
 		velocity.x = min(velocity.x + acc * delta, spd_max)
 		image_set_flip(false)
