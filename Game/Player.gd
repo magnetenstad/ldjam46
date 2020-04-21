@@ -47,7 +47,6 @@ func _process(delta):
 	elif(is_on_floor()):
 		step_timer += delta
 		if(step_timer > 0.12 * (80/abs(velocity.x))):
-			print("test")
 			$"/root/Main/AudioManager".play_sound("step_stone", get_position())
 			step_timer = 0
 	else:
