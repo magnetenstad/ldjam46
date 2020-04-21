@@ -43,7 +43,7 @@ func play(story_name):
 		story = "Could there be anything on the other side?"
 		
 	elif story_name == "story_end":
-		story = "Could there be anything on the other side ..."
+		story = "Could there be anything on the other side ... (you won)"
 		$"/root/Main/World/Player".game_ended = true
 		
 	else:
