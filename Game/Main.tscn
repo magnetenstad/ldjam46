@@ -196,7 +196,6 @@ shape = SubResource( 9 )
 [node name="Sprite" type="AnimatedSprite" parent="World/Player"]
 frames = SubResource( 10 )
 animation = "stand"
-frame = 2
 playing = true
 offset = Vector2( 0, -8 )
 
@@ -329,18 +328,6 @@ position = Vector2( 3314.18, 1235.19 )
 
 [node name="Enemy15" parent="World/Level/Enemies" instance=ExtResource( 7 )]
 position = Vector2( 3405.76, 1617.3 )
-
-[node name="Enemy8" parent="World/Level/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 3410.59, 608.022 )
-
-[node name="Enemy9" parent="World/Level/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 3409.12, 767.537 )
-
-[node name="Enemy10" parent="World/Level/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 3409.85, 495.553 )
-
-[node name="Enemy11" parent="World/Level/Enemies" instance=ExtResource( 7 )]
-position = Vector2( 3409.85, 386.024 )
 
 [node name="Enemy5" parent="World/Level/Enemies" instance=ExtResource( 7 )]
 position = Vector2( 2575.96, 498.619 )
