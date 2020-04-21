@@ -10,7 +10,7 @@ func play(story_name):
 		story = "Your mother just pushed you into the hole!\n She screams: KEEP THAT LIGHT ON!"
 		
 	elif story_name == "story_fiery_cavern":
-		story = "Your mothers voice echoes: \nDo not press space! It will waste your light!"
+		story = "Your mothers' voice echoes: \nDo not press space! It will waste your light!"
 		
 	elif story_name == "story_warcrimes":
 		story = "Someone must have comitted horrible\nwar crimes here. I can feel it."
@@ -18,14 +18,36 @@ func play(story_name):
 	elif story_name == "story_bonfire":
 		story = "Your grandpa once told you about bonfires. He said they give\neternal light, once lit."
 		
-	elif story_name == "sss":
-		story = "b"
+	elif story_name == "story_prank":
+		story = "Looks like you got pranked.\nNothing is here."
 		
-	elif story_name == "sss":
-		story = "b"
+	elif story_name == "story_stairs":
+		story = "Who built these stairs? What a dumb question.\nWho builds anything, ever?"
 		
-	elif story_name == "a":
-		story = "b"
+	elif story_name == "story_travellers":
+		story = "Someone must have been here before."
+		
+	elif story_name == "story_trap":
+		story = "Your grandpa would have told you to immediately\nturn around from here."
+		
+	elif story_name == "story_house":
+		story = "Some fool built a house here.\nBetter burn it."
+		
+	elif story_name == "story_houses":
+		story = "Someone built a huge mountain of wooden planks.\nDid they really think it would last?"
+		
+	elif story_name == "story_houses2":
+		story = "It did not last. You successfully \nburnt down every last one of the planks."
+		
+	elif story_name == "story_pre_end":
+		story = "Could there be anything on the other side?"
+		
+	elif story_name == "story_end":
+		story = "Could there be anything on the other side ..."
+		$"/root/Main/World/Player".game_ended = true
+		
+	else:
+		story = "lbank"
 		
 	if not story_name in seen_stories:
 		$"Timer".start()

@@ -25,6 +25,7 @@ func burn(pos):
 	if get_cell(pos.x, pos.y) in flammable:
 		$"/root/Main/World/Player".tiles_removed_list.append([pos.x, pos.y, get_cell(pos.x, pos.y)])
 		set_cell(pos.x, pos.y, -1)
+		$"/root/Main/World/Player".burnt_blocks += 1
 		firemap.set_cell(pos.x, pos.y, TILE.FIRE)
 		burns.append([floor(rand_range(2, 60)), pos])
 		$"/root/Main/AudioManager".play_sound("fire", map_to_world(Vector2(pos.x, pos.y)))
@@ -51,6 +52,7 @@ func _process(delta):
 				if burn[0] == 1 and cell in flammable:
 					$"/root/Main/World/Player".tiles_removed_list.append([other.x, other.y, cell])
 					firemap.set_cell(other.x, other.y, TILE.FIRE)
+					$"/root/Main/World/Player".burnt_blocks += 1
 					set_cell(other.x, other.y, -1)
 					burns.append([floor(rand_range(2, 60)), other])
 					$"/root/Main/AudioManager".play_sound("fire", map_to_world(Vector2(other.x, other.y)))
